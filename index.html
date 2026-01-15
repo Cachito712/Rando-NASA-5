@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Rando - Accueil</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --text: #ffffff;
+            --accent: #3b82f6;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* IMAGE DE FOND */
+        .bg-fixed {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('fond.jpg') no-repeat center center fixed;
+            background-size: cover;
+            z-index: -1;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .main-title {
+            font-size: 4rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-weight: 900;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .contact-icon {
+            position: absolute;
+            right: 50px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .contact-icon:hover { color: var(--accent); scale: 1.1; }
+
+        /* GRILLE DE CONTENU */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+            gap: 25px;
+        }
+
+        /* ADAPTATION MOBILE */
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; }
+            .main-title { font-size: 2.5rem; }
+            .contact-icon { right: 20px; }
+        }
+
+        /* CARTES / ENCADRÉS */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+
+        .card h2 {
+            font-size: 1.2rem;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+        }
+
+        .card ul li {
+            padding: 8px 0;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+        .card ul li:hover { padding-left: 10px; color: var(--accent); }
+
+        /* MODALE (FENETRE FICHE) */
+        .modal {
+            display: none; position: fixed; z-index: 100;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: white; color: #1e293b;
+            padding: 40px; border-radius: 15px;
+            width: 90%; max-width: 700px;
+            max-height: 80vh; overflow-y: auto;
+            position: relative;
+        }
+        .close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: #94a3b8; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-fixed"></div>
+
+    <header>
+        <h1 class="main-title">NASA Rando</h1>
+        <a href="mailto:cachitopus@gmail.com" class="contact-icon" title="Nous contacter">
+            <i data-lucide="mail" size="40"></i>
+        </a>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>🌍 Culture & Bases</h2>
+            <ul>
+                <li onclick="openModal('Histoire de la randonnée')">Histoire de la randonnée</li>
+                <li onclick="openModal('Bienfait de la randonnée')">Bienfait de la randonnée</li>
+                <li onclick="openModal('Des randonnées pour tous')">Des randonnées pour tous</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🧭 Orientation & Sécurité</h2>
+            <ul>
+                <li onclick="openModal('La Boussole')">Déterminer sa position / Orientation</li>
+                <li onclick="openModal('Météo')">Météo</li>
+                <li onclick="openModal('Risques')">Difficultés / Risques / Dangers</li>
+                <li onclick="openModal('Santé')">Hygiène / Santé / Sécurité</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🎒 Matériel & Vie</h2>
+            <ul>
+                <li onclick="openModal('Equipements')">Equipements</li>
+                <li onclick="openModal('Alimentation')">Alimentation</li>
+                <li onclick="openModal('Les 11 essentiels')">Comment faire son sac à dos ?</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>👣 En Chemin</h2>
+            <ul>
+                <li onclick="openModal('Organisation')">Organisation d'une randonnée</li>
+                <li onclick="openModal('Forme')">Être en forme pour randonner</li>
+                <li onclick="openModal('Pratique')">Pratique</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🌿 Éthique & Nature</h2>
+            <ul>
+                <li onclick="openModal('Environnement')">Environnement</li>
+                <li onclick="openModal('Responsabilité')">Pratique responsable</li>
+                <li onclick="openModal('Ethique')">Éthique de la randonnée</li>
+                <li onclick="openModal('Accompagnateur')">Devenir accompagnateur</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>⛰️ Terrains & Tracés</h2>
+            <ul>
+                <li onclick="openModal('Massifs')">Massifs</li>
+                <li onclick="openModal('Cotation')">Cotation d'une randonnée</li>
+                <li onclick="openModal('Circuits')">Proposition de circuits / traces</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="ficheModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="m-title"></h2>
+            <hr>
+            <div id="m-body"></div>
+        </div>
+    </div>
+
+    <script>
+        // Vos fiches rédigées
+        const FICHES = {
+            "La Boussole": "<h3>L'art de s'orienter</h3><p>Utiliser une boussole permet de garder le cap même dans le brouillard...</p>",
+            "Les 11 essentiels": "<h3>Le sac à dos parfait</h3><p>Pour bien faire son sac, il faut respecter la règle de la pyramide : le lourd près du dos...</p>",
+            "Bienfait de la randonnée": "<h3>Santé & Esprit</h3><p>La randonnée réduit le stress et améliore la santé cardiovasculaire...</p>"
+        };
+
+        function openModal(key) {
+            document.getElementById('m-title').innerText = key;
+            document.getElementById('m-body').innerHTML = FICHES[key] || "<p>Cette fiche pratique est en cours de rédaction. Elle sera bientôt disponible.</p>";
+            document.getElementById('ficheModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('ficheModal').style.display = 'none';
+        }
+
+        // Fermer au clic extérieur
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('ficheModal')) closeModal();
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
