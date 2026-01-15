@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NASA Rando - Accueil</title>
+    <title>NASA Rando - Le Guide</title>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --glass: rgba(255, 255, 255, 0.15);
-            --glass-border: rgba(255, 255, 255, 0.3);
-            --text: #ffffff;
-            --accent: #3b82f6;
+            --glass: rgba(0, 0, 0, 0.5); /* Plus sombre pour faire ressortir le texte */
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-main: #f8fafc; /* Blanc cassé très lisible */
+            --accent: #60a5fa; /* Bleu clair vif */
+            --contact-color: #fbbf24; /* Ambre/Or pour le contact */
         }
 
         body, html {
             margin: 0; padding: 0;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            color: var(--text);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-main);
             min-height: 100vh;
         }
 
@@ -24,7 +25,8 @@
         .bg-fixed {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: url('fond.jpg') no-repeat center center fixed;
+            background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), 
+                        url('fond.jpg') no-repeat center center fixed;
             background-size: cover;
             z-index: -1;
         }
@@ -32,100 +34,126 @@
         /* HEADER */
         header {
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            padding: 60px 20px 40px 20px;
             position: relative;
         }
 
         .main-title {
-            font-size: 4rem;
+            font-size: 6rem; /* Taille augmentée */
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 5px;
+            letter-spacing: 8px;
             font-weight: 900;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            text-align: center;
         }
 
-        .contact-icon {
+        /* ZONE CONTACT */
+        .contact-box {
             position: absolute;
-            right: 50px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: white;
+            right: 40px;
+            top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-decoration: none;
             transition: 0.3s;
         }
-        .contact-icon:hover { color: var(--accent); scale: 1.1; }
+        .contact-box span {
+            color: var(--contact-color);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        .contact-box i {
+            color: var(--contact-color);
+        }
+        .contact-box:hover { transform: scale(1.1); }
 
-        /* GRILLE DE CONTENU */
+        /* GRILLE */
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px 20px;
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
-            gap: 25px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
         }
 
-        /* ADAPTATION MOBILE */
-        @media (max-width: 900px) {
+        @media (max-width: 1024px) {
+            .container { grid-template-columns: 1fr 1fr; }
+            .main-title { font-size: 4rem; }
+        }
+        @media (max-width: 700px) {
             .container { grid-template-columns: 1fr; }
-            .main-title { font-size: 2.5rem; }
-            .contact-icon { right: 20px; }
+            .contact-box { position: static; margin-top: 20px; transform: none; }
         }
 
-        /* CARTES / ENCADRÉS */
+        /* CARTES */
         .card {
             background: var(--glass);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            transition: transform 0.3s;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
         }
-        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .card:hover { 
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.7);
+        }
 
         .card h2 {
-            font-size: 1.2rem;
+            font-size: 1.5rem; /* Plus gros */
+            font-weight: 800; /* Gras */
             margin-top: 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--accent);
+            padding-bottom: 12px;
+            border-bottom: 3px solid var(--accent);
             color: var(--accent);
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .card ul {
             list-style: none;
             padding: 0;
-            margin: 15px 0 0 0;
+            margin: 20px 0 0 0;
         }
 
         .card ul li {
-            padding: 8px 0;
+            padding: 12px 0;
             cursor: pointer;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             transition: 0.2s;
-            font-size: 0.95rem;
+            font-size: 1.1rem; /* Police thématique plus grosse */
+            font-weight: 500;
+            color: var(--text-main);
         }
-        .card ul li:hover { padding-left: 10px; color: var(--accent); }
+        .card ul li:hover { 
+            padding-left: 15px; 
+            color: var(--accent);
+            background: rgba(255,255,255,0.05);
+        }
 
-        /* MODALE (FENETRE FICHE) */
+        /* MODALE */
         .modal {
-            display: none; position: fixed; z-index: 100;
+            display: none; position: fixed; z-index: 1000;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.9);
             align-items: center; justify-content: center;
         }
         .modal-content {
             background: white; color: #1e293b;
-            padding: 40px; border-radius: 15px;
-            width: 90%; max-width: 700px;
-            max-height: 80vh; overflow-y: auto;
+            padding: 40px; border-radius: 20px;
+            width: 90%; max-width: 800px;
+            max-height: 85vh; overflow-y: auto;
             position: relative;
         }
-        .close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: #94a3b8; }
+        .close { position: absolute; top: 15px; right: 20px; font-size: 35px; cursor: pointer; color: #64748b; }
     </style>
 </head>
 <body>
@@ -133,15 +161,16 @@
     <div class="bg-fixed"></div>
 
     <header>
-        <h1 class="main-title">NASA Rando</h1>
-        <a href="mailto:cachitopus@gmail.com" class="contact-icon" title="Nous contacter">
-            <i data-lucide="mail" size="40"></i>
+        <a href="mailto:cachitopus@gmail.com" class="contact-box">
+            <span>Contact</span>
+            <i data-lucide="mail" size="50"></i>
         </a>
+        <h1 class="main-title">NASA Rando</h1>
     </header>
 
     <div class="container">
         <div class="card">
-            <h2>🌍 Culture & Bases</h2>
+            <h2>🌍 Généralités</h2>
             <ul>
                 <li onclick="openModal('Histoire de la randonnée')">Histoire de la randonnée</li>
                 <li onclick="openModal('Bienfait de la randonnée')">Bienfait de la randonnée</li>
@@ -200,23 +229,21 @@
     <div id="ficheModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="m-title"></h2>
+            <h2 id="m-title" style="color:#2563eb; font-size: 2rem; margin-top: 0;"></h2>
             <hr>
-            <div id="m-body"></div>
+            <div id="m-body" style="font-size: 1.1rem; line-height: 1.6;"></div>
         </div>
     </div>
 
     <script>
-        // Vos fiches rédigées
         const FICHES = {
-            "La Boussole": "<h3>L'art de s'orienter</h3><p>Utiliser une boussole permet de garder le cap même dans le brouillard...</p>",
-            "Les 11 essentiels": "<h3>Le sac à dos parfait</h3><p>Pour bien faire son sac, il faut respecter la règle de la pyramide : le lourd près du dos...</p>",
-            "Bienfait de la randonnée": "<h3>Santé & Esprit</h3><p>La randonnée réduit le stress et améliore la santé cardiovasculaire...</p>"
+            "La Boussole": "<h3>L'orientation sur le terrain</h3><p>La boussole est l'outil indispensable du randonneur...</p>",
+            "Bienfait de la randonnée": "<h3>Un esprit sain dans un corps sain</h3><p>La marche sollicite l'ensemble des muscles et libère des endorphines...</p>"
         };
 
         function openModal(key) {
             document.getElementById('m-title').innerText = key;
-            document.getElementById('m-body').innerHTML = FICHES[key] || "<p>Cette fiche pratique est en cours de rédaction. Elle sera bientôt disponible.</p>";
+            document.getElementById('m-body').innerHTML = FICHES[key] || "<p>Cette fiche est en cours de rédaction. Elle sera bientôt disponible.</p>";
             document.getElementById('ficheModal').style.display = 'flex';
         }
 
@@ -224,7 +251,6 @@
             document.getElementById('ficheModal').style.display = 'none';
         }
 
-        // Fermer au clic extérieur
         window.onclick = function(event) {
             if (event.target == document.getElementById('ficheModal')) closeModal();
         }
