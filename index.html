@@ -6,88 +6,131 @@
     <title>NASA Rando</title>
     <style>
         :root {
-            --glass: rgba(0, 0, 0, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass: rgba(0, 0, 0, 0.9);
             --accent: #60a5fa;
         }
 
-        body, html {
+        body {
             margin: 0; padding: 0;
             font-family: 'Segoe UI', sans-serif;
-            color: white; height: 100vh; overflow: hidden;
+            background: #1e293b url('fond.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            min-height: 100vh;
         }
 
-        .bg-fixed {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                        url('fond.jpg') no-repeat center center fixed;
-            background-size: cover; z-index: -1;
-        }
-
+        /* HEADER */
         header {
-            display: grid; grid-template-columns: 280px 1fr 280px;
-            align-items: center; padding: 10px 40px 15px 40px;
-            position: relative; z-index: 2000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
         }
 
-        .links-wrapper { position: relative; padding-bottom: 20px; margin-bottom: -20px; }
-        .links-btn { font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
+        .links-area { position: relative; width: 200px; padding: 10px 0; }
+        .main-title { font-size: 5rem; font-weight: 900; margin: 0; text-transform: uppercase; }
+        .contact-area { width: 200px; text-align: center; cursor: pointer; }
 
-        .main-title {
-            font-size: 5.5rem; text-transform: uppercase; font-weight: 900;
-            text-shadow: 0 5px 20px rgba(0,0,0,0.8); margin: 0; text-align: center;
-        }
+        /* ICONES SVG */
+        .icon-svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; vertical-align: middle; margin-right: 8px; }
+        .icon-mail { width: 40px; height: 40px; stroke: white; fill: none; }
 
-        .contact-box { display: flex; flex-direction: column; align-items: center; cursor: pointer; justify-self: end; }
-        .contact-box span { font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; }
-
-        .icon-svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
-        .icon-mail { width: 45px; height: 45px; stroke: white; stroke-width: 1.5; fill: none; }
-
-        /* --- SYSTÈME DE MENUS --- */
+        /* MENUS DÉROULANTS */
         .submenu {
-            display: none; position: absolute;
-            background: rgba(15, 23, 42, 0.98); min-width: 280px;
-            border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.9);
-            z-index: 3000; padding: 5px 0; border: 1px solid var(--accent);
+            display: none;
+            position: absolute;
+            background: #0f172a;
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            min-width: 280px;
+            padding: 10px 0;
+            z-index: 1000;
+            list-style: none;
         }
 
-        /* Liens utiles (sous le texte) */
-        .links-wrapper:hover .submenu { display: block; top: 30px; left: 0; }
+        /* Affichage Liens Utiles */
+        .links-area:hover .submenu { display: block; top: 40px; left: 0; }
 
-        /* ORIENTATION - REGLAGE PRECIS */
-        .has-submenu { position: relative; }
-        
-        /* Zone de pont invisible pour éviter la fermeture au mouvement de souris vers la droite */
-        .has-submenu::after {
-            content: ""; position: absolute; right: -30px; top: 0; width: 35px; height: 100%;
+        /* Affichage Orientation (dans la carte) */
+        .has-submenu { position: relative; font-weight: bold; color: #fff; cursor: pointer; padding-bottom: 5px; }
+        .has-submenu:hover .submenu { 
+            display: block; 
+            left: 100%; /* S'ouvre à droite */
+            top: 0;
+            margin-left: 10px;
         }
+        /* Pont pour le hover */
+        .has-submenu::after { content: ""; position: absolute; right: -20px; width: 20px; height: 100%; top: 0; }
 
-        .has-submenu:hover > .submenu { 
-            display: block !important; 
-            left: 100% !important; 
-            top: -10px !important; 
-            margin-left: 5px;
-        }
+        .submenu li { padding: 10px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .submenu li:hover { background: rgba(96, 165, 250, 0.2); color: var(--accent); }
+        .submenu a { color: white; text-decoration: none; display: block; }
 
-        .submenu li, .submenu a { 
-            padding: 12px 20px; display: block; text-decoration: none; 
-            color: white; border-bottom: 1px solid rgba(255,255,255,0.05);
-            background: transparent !important; cursor: pointer;
-        }
-        .submenu li:hover, .submenu a:hover { color: var(--accent) !important; background: rgba(255,255,255,0.1) !important; }
-
-        /* --- GRILLE --- */
+        /* GRILLE */
         .container {
-            max-width: 1400px; margin: 0 auto; padding: 0 20px;
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
         }
+
         .card {
-            background: var(--glass); backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px 20px;
+            background: var(--glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
         }
-        .card-orientation { z-index: 1000; } /* Priorité d'affichage pour les menus */
-        
-        .card h2 {
-            font-size: 1.25rem; color: var(--accent); text-transform: uppercase;
-            border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin-top:
+
+        .card h2 { color: var(--accent); border-bottom: 1px solid var(--accent); padding-bottom: 10px; margin-top: 0; }
+        .card ul { list-style: none; padding: 0; }
+        .card li { padding: 8px 0; cursor: pointer; }
+        .card li:hover { color: var(--accent); }
+
+        /* MODALES */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-content { background: white; color: black; padding: 30px; border-radius: 12px; width: 500px; position: relative; }
+        .close { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; }
+        form { display: flex; flex-direction: column; gap: 10px; }
+        input, textarea, button { padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit; }
+        button { background: var(--accent); color: white; border: none; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="links-area">
+            <span style="font-weight: bold; cursor: pointer;">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                Liens utiles
+            </span>
+            <ul class="submenu">
+                <li><a href="https://meteofrance.com" target="_blank">Météo France</a></li>
+            </ul>
+        </div>
+
+        <h1 class="main-title">NASA Rando</h1>
+
+        <div class="contact-area" onclick="openModal('contactModal')">
+            <div style="font-weight: bold; margin-bottom: 5px;">CONTACT</div>
+            <svg class="icon-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>🌍 Généralités</h2>
+            <ul>
+                <li onclick="openModal('info')">Histoire de la randonnée</li>
+                <li onclick="openModal('info')">Bienfait de la randonnée</li>
+                <li onclick="openModal('info')">Des randonnées pour tous</li>
+            </ul>
+        </div>
+
+        <div class="card" style="z-index: 500;">
+            <h2>🧭 Orientation & Sécurité</h2>
+            <ul>
+                <li class="has-submenu">
+                    Déterminer sa position / son orientation ▾
+                    <ul class="submenu">
