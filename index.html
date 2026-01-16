@@ -25,51 +25,67 @@
         }
 
         header {
-            display: grid; grid-template-columns: 250px 1fr 250px;
+            display: grid; grid-template-columns: 280px 1fr 280px;
             align-items: center; padding: 10px 40px 15px 40px;
             position: relative; z-index: 1000;
         }
 
-        /* LIENS UTILES - SÉCURISÉ */
-        .links-wrapper { position: relative; padding: 15px 0; }
-        .links-btn { font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        /* --- LIENS UTILES (GAUCHE) --- */
+        .links-wrapper { 
+            position: relative; 
+            padding-bottom: 25px; /* Zone tampon pour descendre la souris vers le menu */
+            margin-bottom: -25px;
+        }
+        .links-btn { 
+            font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 1.1rem;
+        }
 
+        /* --- TITRE CENTRAL --- */
         .main-title {
             font-size: 5.5rem; text-transform: uppercase; font-weight: 900;
             text-shadow: 0 5px 20px rgba(0,0,0,0.8); margin: 0; text-align: center;
         }
 
-        .contact-box { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        /* --- CONTACT (DROITE) --- */
+        .contact-box { display: flex; flex-direction: column; align-items: center; cursor: pointer; justify-self: end; }
+        .contact-box span { font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; }
+
+        /* Icones SVG robustes */
         .icon-svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
         .icon-mail { width: 45px; height: 45px; stroke: white; stroke-width: 1.5; fill: none; }
 
-        /* SOUS-MENUS : CONTACT PARFAIT */
+        /* --- SYSTÈME DE SOUS-MENUS --- */
         .submenu {
             display: none; position: absolute;
             background: rgba(15, 23, 42, 0.98); min-width: 280px;
-            border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,1);
+            border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.8);
             z-index: 1100; padding: 5px 0; border: 1px solid var(--accent);
         }
 
-        /* Liens utiles : descend du bouton */
-        .links-wrapper:hover .submenu { display: block; top: 45px; left: 0; }
+        /* Affichage Liens utiles (sous le texte) */
+        .links-wrapper:hover .submenu { display: block; top: 35px; left: 0; }
 
-        /* Orientation : s'ouvre à droite */
-        .has-submenu { position: relative; padding-right: 20px; }
+        /* Affichage Orientation (à droite du texte) */
+        .has-submenu { 
+            position: relative; 
+            padding-right: 30px !important; /* Espace pour la flèche */
+        }
+        /* Zone invisible pour faire le pont entre le titre et le menu à droite */
+        .has-submenu::after {
+            content: ""; position: absolute; right: -25px; top: 0; width: 30px; height: 100%;
+        }
         .has-submenu:hover .submenu { 
-            display: block; 
-            left: 95%; /* Légère superposition pour éviter le vide */
-            top: -5px; 
+            display: block; left: 100%; top: -5px; 
         }
 
         .submenu a, .submenu li { 
             padding: 12px 20px; display: block; text-decoration: none; 
             color: white; border-bottom: 1px solid rgba(255,255,255,0.05);
-            background: transparent !important; cursor: pointer;
+            background: transparent !important; cursor: pointer; transition: 0.2s;
         }
         .submenu a:hover, .submenu li:hover { color: var(--accent) !important; background: rgba(255,255,255,0.1) !important; }
 
-        /* GRILLE PRINCIPALE */
+        /* --- GRILLE DE CARTES --- */
         .container {
             max-width: 1400px; margin: 0 auto; padding: 0 20px;
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
@@ -84,10 +100,10 @@
             border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin-top: 0;
         }
         ul { list-style: none; padding: 0; margin: 0; }
-        li { padding: 8px 0; cursor: pointer; transition: 0.2s; }
-        li:hover { color: var(--accent); }
+        .card li { padding: 8px 0; cursor: pointer; transition: 0.2s; }
+        .card li:hover { color: var(--accent); }
 
-        /* MODALES */
+        /* --- MODALES --- */
         .modal {
             display: none; position: fixed; z-index: 2000;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -189,4 +205,21 @@
             <ul>
                 <li onclick="openModal('Massifs')">Massifs</li>
                 <li onclick="openModal('Cotation')">Cotation d'une randonnée</li>
-                <li onclick="openModal('Traces')
+                <li onclick="openModal('Traces')">Proposition de circuits / traces</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="ficheModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('ficheModal')">&times;</span>
+            <h2 id="m-title" style="color:var(--accent)"></h2>
+            <div id="m-body" style="line-height:1.6; color:#1e293b; padding-top:10px;"></div>
+        </div>
+    </div>
+
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('contactModal')">&times;</span>
+            <h2 style="color:var(--accent)">Contactez NASA Rando</h2>
+            <form action="
