@@ -27,65 +27,57 @@
         header {
             display: grid; grid-template-columns: 280px 1fr 280px;
             align-items: center; padding: 10px 40px 15px 40px;
-            position: relative; z-index: 1000;
+            position: relative; z-index: 2000;
         }
 
-        /* --- LIENS UTILES (GAUCHE) --- */
-        .links-wrapper { 
-            position: relative; 
-            padding-bottom: 25px; /* Zone tampon pour descendre la souris vers le menu */
-            margin-bottom: -25px;
-        }
-        .links-btn { 
-            font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 1.1rem;
-        }
+        .links-wrapper { position: relative; padding-bottom: 20px; margin-bottom: -20px; }
+        .links-btn { font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 1.1rem; }
 
-        /* --- TITRE CENTRAL --- */
         .main-title {
             font-size: 5.5rem; text-transform: uppercase; font-weight: 900;
             text-shadow: 0 5px 20px rgba(0,0,0,0.8); margin: 0; text-align: center;
         }
 
-        /* --- CONTACT (DROITE) --- */
         .contact-box { display: flex; flex-direction: column; align-items: center; cursor: pointer; justify-self: end; }
         .contact-box span { font-weight: bold; font-size: 0.9rem; margin-bottom: 5px; }
 
-        /* Icones SVG robustes */
         .icon-svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
         .icon-mail { width: 45px; height: 45px; stroke: white; stroke-width: 1.5; fill: none; }
 
-        /* --- SYSTÈME DE SOUS-MENUS --- */
+        /* --- SYSTÈME DE MENUS --- */
         .submenu {
             display: none; position: absolute;
             background: rgba(15, 23, 42, 0.98); min-width: 280px;
-            border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            z-index: 1100; padding: 5px 0; border: 1px solid var(--accent);
+            border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            z-index: 3000; padding: 5px 0; border: 1px solid var(--accent);
         }
 
-        /* Affichage Liens utiles (sous le texte) */
-        .links-wrapper:hover .submenu { display: block; top: 35px; left: 0; }
+        /* Liens utiles (sous le texte) */
+        .links-wrapper:hover .submenu { display: block; top: 30px; left: 0; }
 
-        /* Affichage Orientation (à droite du texte) */
-        .has-submenu { 
-            position: relative; 
-            padding-right: 30px !important; /* Espace pour la flèche */
-        }
-        /* Zone invisible pour faire le pont entre le titre et le menu à droite */
+        /* ORIENTATION - REGLAGE PRECIS */
+        .has-submenu { position: relative; }
+        
+        /* Zone de pont invisible pour éviter la fermeture au mouvement de souris vers la droite */
         .has-submenu::after {
-            content: ""; position: absolute; right: -25px; top: 0; width: 30px; height: 100%;
-        }
-        .has-submenu:hover .submenu { 
-            display: block; left: 100%; top: -5px; 
+            content: ""; position: absolute; right: -30px; top: 0; width: 35px; height: 100%;
         }
 
-        .submenu a, .submenu li { 
+        .has-submenu:hover > .submenu { 
+            display: block !important; 
+            left: 100% !important; 
+            top: -10px !important; 
+            margin-left: 5px;
+        }
+
+        .submenu li, .submenu a { 
             padding: 12px 20px; display: block; text-decoration: none; 
             color: white; border-bottom: 1px solid rgba(255,255,255,0.05);
-            background: transparent !important; cursor: pointer; transition: 0.2s;
+            background: transparent !important; cursor: pointer;
         }
-        .submenu a:hover, .submenu li:hover { color: var(--accent) !important; background: rgba(255,255,255,0.1) !important; }
+        .submenu li:hover, .submenu a:hover { color: var(--accent) !important; background: rgba(255,255,255,0.1) !important; }
 
-        /* --- GRILLE DE CARTES --- */
+        /* --- GRILLE --- */
         .container {
             max-width: 1400px; margin: 0 auto; padding: 0 20px;
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
@@ -94,132 +86,8 @@
             background: var(--glass); backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px 20px;
         }
-        .card-orientation { z-index: 500; }
+        .card-orientation { z-index: 1000; } /* Priorité d'affichage pour les menus */
+        
         .card h2 {
             font-size: 1.25rem; color: var(--accent); text-transform: uppercase;
-            border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin-top: 0;
-        }
-        ul { list-style: none; padding: 0; margin: 0; }
-        .card li { padding: 8px 0; cursor: pointer; transition: 0.2s; }
-        .card li:hover { color: var(--accent); }
-
-        /* --- MODALES --- */
-        .modal {
-            display: none; position: fixed; z-index: 2000;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); align-items: center; justify-content: center;
-        }
-        .modal-content {
-            background: white; color: #1e293b; padding: 30px; border-radius: 15px;
-            width: 80%; max-width: 700px; position: relative;
-        }
-        .close { position: absolute; top: 10px; right: 15px; font-size: 30px; cursor: pointer; }
-        form { display: flex; flex-direction: column; gap: 10px; }
-        input, textarea { padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; }
-        button { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
-    </style>
-</head>
-<body>
-    <div class="bg-fixed"></div>
-
-    <header>
-        <div class="links-wrapper">
-            <div class="links-btn">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-                Liens utiles
-            </div>
-            <ul class="submenu">
-                <a href="https://meteofrance.com" target="_blank">Météo France</a>
-            </ul>
-        </div>
-
-        <h1 class="main-title">NASA Rando</h1>
-
-        <div class="contact-box" onclick="openContact()">
-            <span>CONTACT</span>
-            <svg class="icon-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="card">
-            <h2>🌍 Généralités</h2>
-            <ul>
-                <li onclick="openModal('Histoire de la randonnée')">Histoire de la randonnée</li>
-                <li onclick="openModal('Bienfait de la randonnée')">Bienfait de la randonnée</li>
-                <li onclick="openModal('Des randonnées pour tous')">Des randonnées pour tous</li>
-            </ul>
-        </div>
-
-        <div class="card card-orientation">
-            <h2>🧭 Orientation & Sécurité</h2>
-            <ul>
-                <li class="has-submenu">
-                    Déterminer sa position / son orientation ▾
-                    <ul class="submenu">
-                        <li onclick="openModal('Carte topographique')">Carte topographique</li>
-                        <li onclick="openModal('Balisage')">Balisage des itinéraires</li>
-                        <li onclick="openModal('Boussole')">La boussole</li>
-                        <li onclick="openModal('Altimètre')">Altimètre</li>
-                        <li onclick="openModal('GPS')">GPS</li>
-                        <li onclick="openModal('S\'orienter')">S'orienter en randonnée</li>
-                        <li onclick="openModal('Logiciels')">Logiciel de randonnée</li>
-                    </ul>
-                </li>
-                <li onclick="openModal('Météo')">Météo</li>
-                <li onclick="openModal('Risques')">Gestion des difficultés / Risques / Dangers</li>
-                <li onclick="openModal('Santé')">Hygiène / Santé / Sécurité</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h2>🎒 Matériel</h2>
-            <ul>
-                <li onclick="openModal('Equipements')">Équipements</li>
-                <li onclick="openModal('Alimentation')">Alimentation</li>
-                <li onclick="openModal('Sac à dos')">Comment faire son sac à dos ?</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h2>👣 Pratique & Forme</h2>
-            <ul>
-                <li onclick="openModal('Organisation')">Organisation d'une randonnée</li>
-                <li onclick="openModal('Forme')">Être en forme en prévision d'une randonnée</li>
-                <li onclick="openModal('Pratique')">Pratique</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h2>🌿 Éthique & Nature</h2>
-            <ul>
-                <li onclick="openModal('Environnement')">Environnement</li>
-                <li onclick="openModal('Responsabilité')">Vers une pratique plus responsable</li>
-                <li onclick="openModal('Ethique')">Éthique de la randonnée</li>
-                <li onclick="openModal('Accompagnateur')">Comment devenir accompagnateur</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h2>⛰️ Terrains</h2>
-            <ul>
-                <li onclick="openModal('Massifs')">Massifs</li>
-                <li onclick="openModal('Cotation')">Cotation d'une randonnée</li>
-                <li onclick="openModal('Traces')">Proposition de circuits / traces</li>
-            </ul>
-        </div>
-    </div>
-
-    <div id="ficheModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('ficheModal')">&times;</span>
-            <h2 id="m-title" style="color:var(--accent)"></h2>
-            <div id="m-body" style="line-height:1.6; color:#1e293b; padding-top:10px;"></div>
-        </div>
-    </div>
-
-    <div id="contactModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('contactModal')">&times;</span>
-            <h2 style="color:var(--accent)">Contactez NASA Rando</h2>
-            <form action="
+            border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin-top:
