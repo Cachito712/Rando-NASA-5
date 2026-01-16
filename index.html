@@ -25,18 +25,14 @@
         }
 
         header {
-            display: grid; grid-template-columns: 200px 1fr 200px;
-            align-items: center; padding: 10px 50px 15px 50px;
+            display: grid; grid-template-columns: 250px 1fr 250px;
+            align-items: center; padding: 10px 40px 15px 40px;
             position: relative; z-index: 1000;
         }
 
-        /* LIENS UTILES - ZONE DE CONTACT SÉCURISÉE */
-        .links-wrapper { 
-            position: relative; padding: 10px 0; /* Zone tampon */
-        }
-        .links-btn { 
-            font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;
-        }
+        /* LIENS UTILES - SÉCURISÉ */
+        .links-wrapper { position: relative; padding: 15px 0; }
+        .links-btn { font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; }
 
         .main-title {
             font-size: 5.5rem; text-transform: uppercase; font-weight: 900;
@@ -47,30 +43,33 @@
         .icon-svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
         .icon-mail { width: 45px; height: 45px; stroke: white; stroke-width: 1.5; fill: none; }
 
-        /* SOUS-MENUS COLLÉS */
+        /* SOUS-MENUS : CONTACT PARFAIT */
         .submenu {
             display: none; position: absolute;
-            background: rgba(15, 23, 42, 0.98); min-width: 220px;
+            background: rgba(15, 23, 42, 0.98); min-width: 280px;
             border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,1);
             z-index: 1100; padding: 5px 0; border: 1px solid var(--accent);
-            top: 100%; left: 0; margin-top: -5px; /* On remonte le menu pour "mordre" sur le bouton */
         }
 
-        .links-wrapper:hover .submenu { display: block; }
+        /* Liens utiles : descend du bouton */
+        .links-wrapper:hover .submenu { display: block; top: 45px; left: 0; }
 
-        /* ORIENTATION - REGLAGE POSITION */
-        .has-submenu { position: relative; }
-        .has-submenu .submenu { left: 100%; top: 0; margin-left: -5px; margin-top: 0; }
-        .has-submenu:hover .submenu { display: block; }
+        /* Orientation : s'ouvre à droite */
+        .has-submenu { position: relative; padding-right: 20px; }
+        .has-submenu:hover .submenu { 
+            display: block; 
+            left: 95%; /* Légère superposition pour éviter le vide */
+            top: -5px; 
+        }
 
         .submenu a, .submenu li { 
             padding: 12px 20px; display: block; text-decoration: none; 
             color: white; border-bottom: 1px solid rgba(255,255,255,0.05);
-            background: transparent !important;
+            background: transparent !important; cursor: pointer;
         }
         .submenu a:hover, .submenu li:hover { color: var(--accent) !important; background: rgba(255,255,255,0.1) !important; }
 
-        /* GRILLE CONTENU */
+        /* GRILLE PRINCIPALE */
         .container {
             max-width: 1400px; margin: 0 auto; padding: 0 20px;
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
@@ -79,12 +78,13 @@
             background: var(--glass); backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border); border-radius: 12px; padding: 15px 20px;
         }
+        .card-orientation { z-index: 500; }
         .card h2 {
-            font-size: 1.2rem; color: var(--accent); text-transform: uppercase;
+            font-size: 1.25rem; color: var(--accent); text-transform: uppercase;
             border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin-top: 0;
         }
         ul { list-style: none; padding: 0; margin: 0; }
-        li { padding: 6px 0; cursor: pointer; transition: 0.2s; }
+        li { padding: 8px 0; cursor: pointer; transition: 0.2s; }
         li:hover { color: var(--accent); }
 
         /* MODALES */
@@ -95,12 +95,12 @@
         }
         .modal-content {
             background: white; color: #1e293b; padding: 30px; border-radius: 15px;
-            width: 80%; max-width: 600px; position: relative;
+            width: 80%; max-width: 700px; position: relative;
         }
         .close { position: absolute; top: 10px; right: 15px; font-size: 30px; cursor: pointer; }
         form { display: flex; flex-direction: column; gap: 10px; }
-        input, textarea { padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; }
-        button { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        input, textarea { padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; }
+        button { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -130,49 +130,57 @@
             <h2>🌍 Généralités</h2>
             <ul>
                 <li onclick="openModal('Histoire de la randonnée')">Histoire de la randonnée</li>
-                <li onclick="openModal('Bienfaits')">Bienfaits de la randonnée</li>
-                <li onclick="openModal('Pour tous')">Des randonnées pour tous</li>
+                <li onclick="openModal('Bienfait de la randonnée')">Bienfait de la randonnée</li>
+                <li onclick="openModal('Des randonnées pour tous')">Des randonnées pour tous</li>
             </ul>
         </div>
 
-        <div class="card" style="z-index: 500;">
-            <h2>🧭 Orientation</h2>
+        <div class="card card-orientation">
+            <h2>🧭 Orientation & Sécurité</h2>
             <ul>
                 <li class="has-submenu">
-                    Position / Orientation ▾
+                    Déterminer sa position / son orientation ▾
                     <ul class="submenu">
-                        <li onclick="openModal('Carte')">Carte topographique</li>
+                        <li onclick="openModal('Carte topographique')">Carte topographique</li>
+                        <li onclick="openModal('Balisage')">Balisage des itinéraires</li>
                         <li onclick="openModal('Boussole')">La boussole</li>
+                        <li onclick="openModal('Altimètre')">Altimètre</li>
                         <li onclick="openModal('GPS')">GPS</li>
+                        <li onclick="openModal('S\'orienter')">S'orienter en randonnée</li>
+                        <li onclick="openModal('Logiciels')">Logiciel de randonnée</li>
                     </ul>
                 </li>
                 <li onclick="openModal('Météo')">Météo</li>
-                <li onclick="openModal('Risques')">Risques & Dangers</li>
+                <li onclick="openModal('Risques')">Gestion des difficultés / Risques / Dangers</li>
+                <li onclick="openModal('Santé')">Hygiène / Santé / Sécurité</li>
             </ul>
         </div>
 
         <div class="card">
             <h2>🎒 Matériel</h2>
             <ul>
-                <li onclick="openModal('Équipements')">Équipements</li>
+                <li onclick="openModal('Equipements')">Équipements</li>
                 <li onclick="openModal('Alimentation')">Alimentation</li>
-                <li onclick="openModal('Sac')">Faire son sac</li>
+                <li onclick="openModal('Sac à dos')">Comment faire son sac à dos ?</li>
             </ul>
         </div>
 
         <div class="card">
-            <h2>👣 En Chemin</h2>
+            <h2>👣 Pratique & Forme</h2>
             <ul>
-                <li onclick="openModal('Organisation')">Organisation</li>
-                <li onclick="openModal('Forme')">Être en forme</li>
+                <li onclick="openModal('Organisation')">Organisation d'une randonnée</li>
+                <li onclick="openModal('Forme')">Être en forme en prévision d'une randonnée</li>
+                <li onclick="openModal('Pratique')">Pratique</li>
             </ul>
         </div>
 
         <div class="card">
-            <h2>🌿 Éthique</h2>
+            <h2>🌿 Éthique & Nature</h2>
             <ul>
                 <li onclick="openModal('Environnement')">Environnement</li>
-                <li onclick="openModal('Responsable')">Pratique responsable</li>
+                <li onclick="openModal('Responsabilité')">Vers une pratique plus responsable</li>
+                <li onclick="openModal('Ethique')">Éthique de la randonnée</li>
+                <li onclick="openModal('Accompagnateur')">Comment devenir accompagnateur</li>
             </ul>
         </div>
 
@@ -180,42 +188,5 @@
             <h2>⛰️ Terrains</h2>
             <ul>
                 <li onclick="openModal('Massifs')">Massifs</li>
-                <li onclick="openModal('Cotation')">Cotation</li>
-            </ul>
-        </div>
-    </div>
-
-    <div id="ficheModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('ficheModal')">&times;</span>
-            <h2 id="m-title" style="color:var(--accent)"></h2>
-            <div id="m-body"></div>
-        </div>
-    </div>
-
-    <div id="contactModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('contactModal')">&times;</span>
-            <h2 style="color:var(--accent)">Contact</h2>
-            <form action="https://formspree.io/f/mqkrpobj" method="POST">
-                <input type="text" name="nom" placeholder="Nom" required>
-                <input type="text" name="prenom" placeholder="Prénom" required>
-                <input type="email" name="_replyto" placeholder="Votre mail" required>
-                <textarea name="message" rows="4" placeholder="Message..." required></textarea>
-                <button type="submit">Envoyer</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        const FICHES = { "Histoire de la randonnée": "<h3>Histoire</h3><p>Contenu sur l'histoire de la rando...</p>" };
-        function openModal(key) {
-            document.getElementById('m-title').innerText = key;
-            document.getElementById('m-body').innerHTML = FICHES[key] || "En cours de rédaction...";
-            document.getElementById('ficheModal').style.display = 'flex';
-        }
-        function openContact() { document.getElementById('contactModal').style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    </script>
-</body>
-</html>
+                <li onclick="openModal('Cotation')">Cotation d'une randonnée</li>
+                <li onclick="openModal('Traces')
