@@ -7,7 +7,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --glass: rgba(0, 0, 0, 0.7);
+            --glass: rgba(0, 0, 0, 0.75);
             --glass-border: rgba(255, 255, 255, 0.2);
             --accent: #60a5fa;
         }
@@ -33,7 +33,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 5px 0;
+            padding: 10px 0 40px 0; /* Augmentation de l'espace sous le titre (40px) */
             position: relative;
         }
 
@@ -45,25 +45,23 @@
             text-shadow: 0 5px 20px rgba(0,0,0,0.8);
         }
 
-        /* CONTACT CORRIGÉ */
         .contact-box {
             position: absolute;
-            right: 40px; top: 10px;
+            right: 40px; top: 20px;
             display: flex; flex-direction: column; align-items: center;
             text-decoration: none; 
-            color: white; /* Blanc pour la lisibilité */
+            color: white;
             transition: 0.3s;
         }
         .contact-box span { font-weight: bold; font-size: 0.9rem; margin-bottom: 2px; }
-        .contact-box i { color: white; stroke-width: 2.5; }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 5px 20px;
+            padding: 0 20px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 20px;
         }
 
         .card {
@@ -71,63 +69,76 @@
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 12px;
-            padding: 12px 20px;
-            position: relative; /* Pour que le z-index fonctionne */
+            padding: 15px 20px;
+            position: relative;
         }
 
-        /* Pour que la carte Orientation soit au-dessus de la ligne 2 */
+        /* Priorité d'affichage pour l'encadré Orientation */
         .card-orientation { z-index: 100; }
 
         .card h2 {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: bold;
-            margin: 0 0 8px 0;
+            margin: 0 0 12px 0;
             color: var(--accent);
             text-transform: uppercase;
             border-bottom: 2px solid var(--accent);
-            padding-bottom: 4px;
+            padding-bottom: 6px;
         }
 
         .card ul { list-style: none; padding: 0; margin: 0; }
         .card li {
-            padding: 5px 0;
+            padding: 7px 0;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 1rem;
             transition: 0.2s;
         }
         .card li:hover { color: var(--accent); }
 
-        /* SOUS-MENU CORRIGÉ */
-        .has-submenu { position: relative; }
-        .has-submenu:hover { color: var(--accent); }
+        /* SOUS-MENU ALIGNÉ À DROITE DU TITRE */
+        .has-submenu { position: relative; display: block; }
         
         .submenu {
             display: none;
             position: absolute;
-            left: 105%; /* S'affiche sur le côté pour ne pas masquer le reste */
-            top: 0;
+            left: 100%; /* Juste à côté du texte */
+            top: -10px; /* Aligné avec le haut de la ligne */
             background: rgba(15, 23, 42, 0.98);
-            min-width: 260px;
+            min-width: 280px;
             border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            box-shadow: 0 10px 30px rgba(0,0,0,1);
             z-index: 999;
             padding: 10px 0;
             border: 1px solid var(--accent);
+            margin-left: 10px; /* Petit interstice pour la clarté */
         }
+
+        /* Flèche décorative pointant vers le titre */
+        .submenu::before {
+            content: "";
+            position: absolute;
+            right: 100%;
+            top: 20px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: transparent var(--accent) transparent transparent;
+        }
+
         .has-submenu:hover .submenu { display: block; }
-        .submenu li { padding: 8px 20px !important; border-bottom: 1px solid rgba(255,255,255,0.05); color: white; }
+        .submenu li { padding: 10px 20px !important; border-bottom: 1px solid rgba(255,255,255,0.05); color: white; }
         .submenu li:hover { background: var(--accent); color: white; }
 
+        /* MODALE */
         .modal {
             display: none; position: fixed; z-index: 2000;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); align-items: center; justify-content: center;
         }
         .modal-content {
-            background: white; color: #1e293b; padding: 30px; border-radius: 15px;
-            width: 80%; max-width: 750px; position: relative;
+            background: white; color: #1e293b; padding: 35px; border-radius: 15px;
+            width: 85%; max-width: 800px; max-height: 85vh; overflow-y: auto; position: relative;
         }
-        .close { position: absolute; top: 10px; right: 15px; font-size: 30px; cursor: pointer; color: #334155; }
+        .close { position: absolute; top: 15px; right: 20px; font-size: 35px; cursor: pointer; color: #334155; }
     </style>
 </head>
 <body>
@@ -137,7 +148,7 @@
         <h1 class="main-title">NASA Rando</h1>
         <a href="mailto:cachitopus@gmail.com" class="contact-box">
             <span>CONTACT</span>
-            <i data-lucide="mail" style="width: 45px; height: 45px;"></i>
+            <i data-lucide="mail" style="width: 50px; height: 50px;"></i>
         </a>
     </header>
 
@@ -213,13 +224,12 @@
     <div id="ficheModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="m-title" style="color:var(--accent); margin-top: 0;"></h2>
-            <div id="m-body" style="line-height:1.6; color:#1e293b;"></div>
+            <h2 id="m-title" style="color:var(--accent); margin-top: 0; border-bottom: 1px solid #ddd; padding-bottom: 10px;"></h2>
+            <div id="m-body" style="line-height:1.7; color:#1e293b; padding-top: 15px;"></div>
         </div>
     </div>
 
     <script>
-        // ICI VOUS POUVEZ AJOUTER VOS TEXTES
         const FICHES = {
             "Histoire de la randonnée": `
                 <h3>De la nécessité au loisir</h3>
@@ -227,22 +237,21 @@
                 <ul>
                     <li><strong>XVIIIe siècle :</strong> Les philosophes comme Jean-Jacques Rousseau célèbrent la marche comme outil de réflexion.</li>
                     <li><strong>XIXe siècle :</strong> Naissance des premiers guides et clubs (Club Alpin Français en 1872).</li>
-                    <li><strong>1947 :</strong> Création du premier sentier de Grande Randonnée (GR) par Jean Loiseau.</li>
+                    <li><strong>1947 :</strong> Création du premier sentier de Grande Randonnée (GR) en France par Jean Loiseau.</li>
                 </ul>
                 <p>Aujourd'hui, c'est une activité mêlant sport, contemplation et respect de l'environnement.</p>`,
             
-            "Boussole": "<h3>Utilisation</h3><p>La boussole permet d'orienter la carte et de suivre un azimut...</p>"
+            "Boussole": "<h3>L'instrument de survie</h3><p>La boussole permet d'orienter sa carte et de suivre un azimut dans le brouillard.</p>"
         };
 
         function openModal(key) {
             document.getElementById('m-title').innerText = key;
-            document.getElementById('m-body').innerHTML = FICHES[key] || "<p>Contenu en cours de rédaction par NASA Rando...</p>";
+            document.getElementById('m-body').innerHTML = FICHES[key] || "<h3>" + key + "</h3><p>Contenu en cours de rédaction par NASA Rando...</p>";
             document.getElementById('ficheModal').style.display = 'flex';
         }
         function closeModal() { document.getElementById('ficheModal').style.display = 'none'; }
         window.onclick = function(e) { if (e.target == document.getElementById('ficheModal')) closeModal(); }
         
-        // Initialise les icônes Lucide
         lucide.createIcons();
     </script>
 </body>
