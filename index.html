@@ -26,25 +26,36 @@
             background-size: cover; z-index: -1;
         }
 
+        /* HEADER RESTRUCTURÉ */
         header {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 10px 40px 20px 40px;
+            padding: 10px 50px 20px 50px;
         }
 
-        /* LIENS UTILES - GAUCHE */
-        .links-box { position: relative; justify-self: start; padding: 10px 0; }
-        .links-box span { font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        /* LIENS UTILES - BLOC GAUCHE */
+        .links-box { 
+            position: relative; 
+            width: 200px; /* Largeur fixe pour stabiliser la gauche */
+            z-index: 1000;
+        }
+        .links-box > span { 
+            font-weight: bold; font-size: 1rem; cursor: pointer; 
+            display: flex; align-items: center; gap: 8px;
+        }
 
         .main-title {
             font-size: 5.5rem; text-transform: uppercase; font-weight: 900;
             text-shadow: 0 5px 20px rgba(0,0,0,0.8); margin: 0;
+            flex-grow: 1; text-align: center;
         }
 
-        /* CONTACT - DROITE */
-        .contact-box { justify-self: end; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
-        .contact-box span { font-weight: bold; font-size: 0.9rem; margin-bottom: 2px; }
+        /* CONTACT - BLOC DROITE */
+        .contact-box { 
+            width: 200px; /* Largeur fixe pour stabiliser la droite */
+            display: flex; flex-direction: column; align-items: center; cursor: pointer; 
+        }
 
         .container {
             max-width: 1400px; margin: 0 auto; padding: 0 20px;
@@ -56,7 +67,7 @@
             border: 1px solid var(--glass-border); border-radius: 12px;
             padding: 15px 20px; position: relative;
         }
-        .card-orientation { z-index: 100; }
+        .card-orientation { z-index: 500; }
 
         .card h2 {
             font-size: 1.25rem; font-weight: bold; margin: 0 0 12px 0;
@@ -65,30 +76,37 @@
         }
 
         .card ul { list-style: none; padding: 0; margin: 0; }
-        .card li { padding: 7px 0; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .card li { padding: 7px 0; cursor: pointer; font-size: 1rem; transition: 0.2s; position: relative;}
         .card li:hover { color: var(--accent); }
 
-        /* RÉGLAGE DES SOUS-MENUS (POUR ÉVITER LA PERTE DU HOVER) */
+        /* --- SYSTÈME DE SOUS-MENUS ROBUSTE --- */
         .submenu {
             display: none; position: absolute;
-            background: rgba(15, 23, 42, 0.98); min-width: 250px;
+            background: rgba(15, 23, 42, 0.98); min-width: 260px;
             border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,1);
             z-index: 999; padding: 10px 0; border: 1px solid var(--accent);
         }
 
-        /* Liens utiles : s'affiche juste en dessous sans espace vide */
+        /* Sous-menu Liens utiles */
         .links-box:hover .submenu { display: block; top: 100%; left: 0; }
 
-        /* Orientation : s'affiche à droite avec un "pont" invisible */
-        .has-submenu { position: relative; }
-        .has-submenu::after { content: ""; position: absolute; right: -20px; top: 0; width: 20px; height: 100%; }
-        .has-submenu:hover .submenu { display: block; left: 100%; top: -10px; margin-left: 10px; }
+        /* Sous-menu Orientation */
+        .has-submenu:hover .submenu { display: block; left: 100%; top: -10px; margin-left: 5px; }
+        /* Pont invisible pour ne pas perdre le hover entre l'élément et son menu */
+        .has-submenu::after {
+            content: ""; position: absolute; right: -15px; top: 0; width: 15px; height: 100%;
+        }
 
         .submenu li, .submenu a { 
             padding: 10px 20px; display: block; text-decoration: none; 
             color: white; font-size: 0.95rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: transparent !important; /* Force la transparence du fond */
         }
-        .submenu li:hover, .submenu a:hover { background: var(--accent); }
+        /* Surlignage transparent : seul le texte change de couleur */
+        .submenu li:hover, .submenu a:hover { 
+            color: var(--accent) !important; 
+            background: rgba(255,255,255,0.05) !important; /* Très léger voile pour guider l'oeil */
+        }
 
         /* MODALES */
         .modal {
@@ -103,7 +121,7 @@
         .close { position: absolute; top: 15px; right: 20px; font-size: 35px; cursor: pointer; color: #334155; }
 
         form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-        input, textarea { padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; font-family: inherit; }
+        input, textarea { padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
         button { background: var(--accent); color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
@@ -208,13 +226,11 @@
             <span class="close" onclick="closeModal('contactModal')">&times;</span>
             <h2 style="color:var(--accent); margin-top:0;">Contactez NASA Rando</h2>
             <form action="https://formspree.io/f/xvgzlowy" method="POST">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <input type="text" name="nom" placeholder="Nom" required>
-                    <input type="text" name="prenom" placeholder="Prénom" required>
-                </div>
+                <input type="text" name="nom" placeholder="Nom" required>
+                <input type="text" name="prenom" placeholder="Prénom" required>
                 <input type="email" name="email" placeholder="Votre adresse mail" required>
                 <textarea name="message" rows="5" placeholder="Votre message..." required></textarea>
-                <button type="submit">Envoyer le message (Transparent)</button>
+                <button type="submit">Envoyer le message</button>
             </form>
         </div>
     </div>
@@ -234,16 +250,4 @@
         function openModal(key) {
             document.getElementById('m-title').innerText = key;
             document.getElementById('m-body').innerHTML = FICHES[key] || "<h3>" + key + "</h3><p>Contenu en cours de rédaction...</p>";
-            document.getElementById('ficheModal').style.display = 'flex';
-        }
-
-        function openContact() { document.getElementById('contactModal').style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        window.onclick = function(e) {
-            if (e.target.className === 'modal') { e.target.style.display = 'none'; }
-        }
-        lucide.createIcons();
-    </script>
-</body>
-</html>
+            document.getElementById('ficheModal').
