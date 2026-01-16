@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NASA Rando</title>
+    <title>NASA Rando - Officiel</title>
     <style>
         :root {
-            --glass: rgba(0, 0, 0, 0.9);
             --accent: #60a5fa;
+            --bg-card: rgba(0, 0, 0, 0.85);
         }
 
         body {
             margin: 0; padding: 0;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             background: #1e293b url('fond.jpg') no-repeat center center fixed;
             background-size: cover;
             color: white;
@@ -24,97 +24,96 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 50px;
+            padding: 20px 60px;
         }
 
-        .links-area { position: relative; width: 200px; padding: 10px 0; }
-        .main-title { font-size: 5rem; font-weight: 900; margin: 0; text-transform: uppercase; }
-        .contact-area { width: 200px; text-align: center; cursor: pointer; }
+        .links-block { position: relative; width: 250px; }
+        .main-title { font-size: 5rem; font-weight: 900; margin: 0; text-transform: uppercase; text-align: center; flex-grow: 1; }
+        .contact-block { width: 250px; text-align: right; cursor: pointer; }
 
-        /* ICONES SVG */
-        .icon-svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; vertical-align: middle; margin-right: 8px; }
-        .icon-mail { width: 40px; height: 40px; stroke: white; fill: none; }
-
-        /* MENUS DÉROULANTS */
-        .submenu {
+        /* MENUS DEROULANTS */
+        .nav-menu {
             display: none;
             position: absolute;
             background: #0f172a;
             border: 1px solid var(--accent);
             border-radius: 8px;
             min-width: 280px;
-            padding: 10px 0;
-            z-index: 1000;
+            padding: 5px 0;
+            z-index: 9999;
             list-style: none;
+            margin: 0;
         }
 
-        /* Affichage Liens Utiles */
-        .links-area:hover .submenu { display: block; top: 40px; left: 0; }
+        /* Hover Liens Utiles */
+        .links-block:hover .nav-menu { display: block; top: 30px; left: 0; }
 
-        /* Affichage Orientation (dans la carte) */
-        .has-submenu { position: relative; font-weight: bold; color: #fff; cursor: pointer; padding-bottom: 5px; }
-        .has-submenu:hover .submenu { 
-            display: block; 
-            left: 100%; /* S'ouvre à droite */
-            top: 0;
+        /* Hover Orientation */
+        .item-special { position: relative; font-weight: bold; cursor: pointer; }
+        .item-special:hover > .nav-menu { 
+            display: block !important; 
+            left: 100% !important; 
+            top: -5px !important;
             margin-left: 10px;
         }
-        /* Pont pour le hover */
-        .has-submenu::after { content: ""; position: absolute; right: -20px; width: 20px; height: 100%; top: 0; }
+        /* Pont invisible pour ne pas perdre le focus */
+        .item-special::after { content: ""; position: absolute; right: -20px; width: 25px; height: 100%; top: 0; }
 
-        .submenu li { padding: 10px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .submenu li:hover { background: rgba(96, 165, 250, 0.2); color: var(--accent); }
-        .submenu a { color: white; text-decoration: none; display: block; }
+        .nav-menu li { 
+            padding: 12px 20px; 
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background: transparent !important; /* Pas de surlignage bleu */
+        }
+        .nav-menu li:hover { color: var(--accent); background: rgba(255,255,255,0.05) !important; }
+        .nav-menu a { color: white; text-decoration: none; display: block; background: transparent !important; }
 
         /* GRILLE */
         .container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-
-        .card {
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
             padding: 20px;
         }
 
-        .card h2 { color: var(--accent); border-bottom: 1px solid var(--accent); padding-bottom: 10px; margin-top: 0; }
-        .card ul { list-style: none; padding: 0; }
-        .card li { padding: 8px 0; cursor: pointer; }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-top: 0; font-size: 1.3rem; }
+        .card ul { list-style: none; padding: 0; margin: 15px 0 0 0; }
+        .card li { padding: 10px 0; cursor: pointer; font-size: 1.05rem; }
         .card li:hover { color: var(--accent); }
 
         /* MODALES */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-content { background: white; color: black; padding: 30px; border-radius: 12px; width: 500px; position: relative; }
-        .close { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; }
-        form { display: flex; flex-direction: column; gap: 10px; }
-        input, textarea, button { padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-family: inherit; }
-        button { background: var(--accent); color: white; border: none; cursor: pointer; font-weight: bold; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; }
+        .modal-content { background: white; color: #1e293b; padding: 40px; border-radius: 15px; width: 90%; max-width: 600px; position: relative; }
+        .close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="links-area">
-            <span style="font-weight: bold; cursor: pointer;">
-                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+        <div class="links-block">
+            <span style="font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
                 Liens utiles
             </span>
-            <ul class="submenu">
+            <ul class="nav-menu">
                 <li><a href="https://meteofrance.com" target="_blank">Météo France</a></li>
             </ul>
         </div>
 
         <h1 class="main-title">NASA Rando</h1>
 
-        <div class="contact-area" onclick="openModal('contactModal')">
-            <div style="font-weight: bold; margin-bottom: 5px;">CONTACT</div>
-            <svg class="icon-mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        <div class="contact-block" onclick="openModal('contactModal')">
+            <div style="font-weight: bold;">CONTACT</div>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
         </div>
     </header>
 
@@ -128,9 +127,86 @@
             </ul>
         </div>
 
-        <div class="card" style="z-index: 500;">
+        <div class="card" style="z-index: 1000;">
             <h2>🧭 Orientation & Sécurité</h2>
             <ul>
-                <li class="has-submenu">
+                <li class="item-special">
                     Déterminer sa position / son orientation ▾
-                    <ul class="submenu">
+                    <ul class="nav-menu">
+                        <li onclick="openModal('info')">Carte topographique</li>
+                        <li onclick="openModal('info')">Balisage des itinéraires</li>
+                        <li onclick="openModal('info')">La boussole</li>
+                        <li onclick="openModal('info')">Altimètre</li>
+                        <li onclick="openModal('info')">GPS</li>
+                        <li onclick="openModal('info')">S'orienter en randonnée</li>
+                        <li onclick="openModal('info')">Logiciel de randonnée</li>
+                    </ul>
+                </li>
+                <li onclick="openModal('info')">Météo</li>
+                <li onclick="openModal('info')">Gestion des difficultés / Risques / Dangers</li>
+                <li onclick="openModal('info')">Hygiène / Santé / Sécurité</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🎒 Matériel</h2>
+            <ul>
+                <li onclick="openModal('info')">Équipements</li>
+                <li onclick="openModal('info')">Alimentation</li>
+                <li onclick="openModal('info')">Comment faire son sac à dos ?</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>👣 Pratique & Forme</h2>
+            <ul>
+                <li onclick="openModal('info')">Organisation d'une randonnée</li>
+                <li onclick="openModal('info')">Être en forme</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🌿 Éthique & Nature</h2>
+            <ul>
+                <li onclick="openModal('info')">Environnement</li>
+                <li onclick="openModal('info')">Vers une pratique plus responsable</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>⛰️ Terrains</h2>
+            <ul>
+                <li onclick="openModal('info')">Massifs</li>
+                <li onclick="openModal('info')">Cotation</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="info" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('info')">&times;</span>
+            <h2>Information</h2>
+            <p>Le contenu détaillé arrive bientôt.</p>
+        </div>
+    </div>
+
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('contactModal')">&times;</span>
+            <h2>Contactez NASA Rando</h2>
+            <form action="https://formspree.io/f/mqkrpobj" method="POST">
+                <input type="text" name="nom" placeholder="Votre Nom" style="width:100%; margin-bottom:10px; padding:10px;" required>
+                <input type="email" name="email" placeholder="Votre Email" style="width:100%; margin-bottom:10px; padding:10px;" required>
+                <textarea name="message" rows="5" placeholder="Message..." style="width:100%; margin-bottom:10px; padding:10px;" required></textarea>
+                <button type="submit" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">ENVOYER</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        window.onclick = function(e) { if (e.target.className === 'modal') e.target.style.display = 'none'; }
+    </script>
+</body>
+</html>
