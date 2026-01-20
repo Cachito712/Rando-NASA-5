@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>NASA Rando - Finalisation</title>
+    <title>NASA Rando - Site Complet</title>
     <style>
         :root {
             --accent: #60a5fa;
@@ -36,24 +36,23 @@
         .nav-menu {
             display: none; position: absolute;
             background: #0f172a; border: 1px solid var(--accent);
-            border-radius: 8px; min-width: 280px; padding: 10px 0;
+            border-radius: 8px; min-width: 300px; padding: 10px 0;
             z-index: 9999; list-style: none; margin: 0;
             box-shadow: 0 15px 40px rgba(0,0,0,0.8);
         }
 
         .links-block:hover .nav-menu { display: block; top: 35px; left: 0; }
 
-        /* ORIENTATION - REGLAGE DE L'ENCADRE ET DU TEXTE */
         .item-special { position: relative; font-weight: bold; cursor: pointer; }
         .item-special:hover > .nav-menu { 
             display: block !important; 
-            left: 40% !important; /* L'encadré se rapproche du titre */
+            left: 40% !important; 
             top: 25px !important; 
         }
 
-        /* DÉCALAGE DU TEXTE À DROITE À L'INTÉRIEUR DU MENU */
+        /* LE DÉCALAGE DEMANDÉ */
         .nav-menu li { 
-            padding: 12px 20px 12px 60px !important; /* Texte repoussé vers la droite */
+            padding: 12px 20px 12px 60px !important; 
             border-bottom: 1px solid rgba(255,255,255,0.05);
             color: white; cursor: pointer;
         }
@@ -76,7 +75,7 @@
         .card li { padding: 10px 0; cursor: pointer; }
         .card li:hover { color: var(--accent); }
 
-        /* MODALE LARGE */
+        /* MODALE */
         .modal { 
             display: none; position: fixed; top: 0; left: 0; 
             width: 100%; height: 100%; background: rgba(0,0,0,0.9); 
@@ -110,7 +109,7 @@
         </div>
         <h1 class="main-title">NASA Rando</h1>
         <div class="contact-block" onclick="openModal('contactModal')">
-            <div style="font-weight: bold;">CONTACT</div>
+            <div style="font-weight: bold; margin-bottom: 5px;">CONTACT</div>
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
         </div>
     </header>
@@ -120,7 +119,8 @@
             <h2>🌍 Généralités</h2>
             <ul>
                 <li onclick="chargerContenu('histoire')">Histoire de la randonnée</li>
-                <li onclick="chargerContenu('bienfaits')">Bienfait de la randonnée</li>
+                <li onclick="chargerContenu('bienfaits')">Bienfaits de la randonnée</li>
+                <li onclick="chargerContenu('tous')">Des randonnées pour tous</li>
             </ul>
         </div>
 
@@ -130,30 +130,52 @@
                 <li class="item-special">
                     Déterminer sa position / son orientation ▾
                     <ul class="nav-menu">
-                        <li onclick="chargerContenu('balisage')">Balisage des itinéraires</li>
                         <li onclick="chargerContenu('carte')">Carte topographique</li>
+                        <li onclick="chargerContenu('balisage')">Balisage des itinéraires</li>
                         <li onclick="chargerContenu('boussole')">La boussole</li>
+                        <li onclick="chargerContenu('altimetre')">Altimètre</li>
+                        <li onclick="chargerContenu('gps')">GPS</li>
+                        <li onclick="chargerContenu('orienter')">S'orienter en randonnée</li>
+                        <li onclick="chargerContenu('logiciels')">Logiciel de randonnée</li>
                     </ul>
                 </li>
                 <li onclick="chargerContenu('meteo')">Météo</li>
+                <li onclick="chargerContenu('risques')">Gestion des difficultés / Risques / Dangers</li>
+                <li onclick="chargerContenu('sante')">Hygiène / Santé / Sécurité</li>
             </ul>
         </div>
 
         <div class="card">
             <h2>🎒 Matériel</h2>
-            <ul><li onclick="chargerContenu('sac')">Comment faire son sac à dos ?</li></ul>
+            <ul>
+                <li onclick="chargerContenu('equipements')">Équipements</li>
+                <li onclick="chargerContenu('alimentation')">Alimentation</li>
+                <li onclick="chargerContenu('sac')">Comment faire son sac à dos ?</li>
+            </ul>
         </div>
+
         <div class="card">
             <h2>👣 Pratique & Forme</h2>
-            <ul><li onclick="chargerContenu('forme')">Être en forme</li></ul>
+            <ul>
+                <li onclick="chargerContenu('organisation')">Organisation d'une randonnée</li>
+                <li onclick="chargerContenu('forme')">Être en forme</li>
+            </ul>
         </div>
+
         <div class="card">
             <h2>🌿 Éthique & Nature</h2>
-            <ul><li onclick="chargerContenu('environnement')">Environnement</li></ul>
+            <ul>
+                <li onclick="chargerContenu('environnement')">Environnement</li>
+                <li onclick="chargerContenu('responsabilite')">Vers une pratique plus responsable</li>
+            </ul>
         </div>
+
         <div class="card">
             <h2>⛰️ Terrains</h2>
-            <ul><li onclick="chargerContenu('massifs')">Massifs</li></ul>
+            <ul>
+                <li onclick="chargerContenu('massifs')">Massifs</li>
+                <li onclick="chargerContenu('cotation')">Cotation d'une randonnée</li>
+            </ul>
         </div>
     </div>
 
@@ -165,6 +187,19 @@
         </div>
     </div>
 
+    <div id="contactModal" class="modal">
+        <div class="modal-content" style="max-width:500px; display:block;">
+            <span class="close" onclick="closeModal('contactModal')">&times;</span>
+            <h2 style="color:var(--accent)">Contactez NASA Rando</h2>
+            <form action="https://formspree.io/f/mqkrpobj" method="POST" style="display:flex; flex-direction:column; gap:10px;">
+                <input type="text" name="nom" placeholder="Votre Nom" style="padding:10px;">
+                <input type="email" name="email" placeholder="Votre Email" style="padding:10px;">
+                <textarea name="message" rows="5" placeholder="Message..." style="padding:10px;"></textarea>
+                <button type="submit" style="padding:10px; background:var(--accent); color:white; border:none; cursor:pointer;">ENVOYER</button>
+            </form>
+        </div>
+    </div>
+
     <script src="donnees.js"></script>
     <script>
         function chargerContenu(id) {
@@ -173,13 +208,14 @@
                 document.getElementById('titreDyna').innerText = info.titre;
                 document.getElementById('corpsDyna').innerHTML = info.texte;
                 const imgContainer = document.getElementById('imageDyna');
-                // Chargement forcé en .png
                 if(info.image) {
                     imgContainer.innerHTML = `<img src="${info.image}" alt="Illustration">`;
                 } else {
                     imgContainer.innerHTML = "";
                 }
                 document.getElementById('modalContenu').style.display = 'flex';
+            } else {
+                alert("Contenu '" + id + "' en cours de rédaction...");
             }
         }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
