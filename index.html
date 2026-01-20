@@ -7,7 +7,7 @@
     <style>
         :root {
             --accent: #60a5fa;
-            --header-ui: #fbbf24; /* Jaune ambré pour une lisibilité parfaite */
+            --header-ui: #fbbf24; /* Jaune ambré pour lisibilité */
             --bg-card: rgba(0, 0, 0, 0.85);
         }
 
@@ -20,13 +20,13 @@
             min-height: 100vh;
         }
 
-        /* HEADER AMÉLIORÉ */
+        /* HEADER */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 60px;
-            background: rgba(0,0,0,0.2); /* Léger voile pour aider la lecture */
+            background: rgba(0,0,0,0.3);
         }
 
         .links-block { position: relative; width: 250px; color: var(--header-ui); }
@@ -35,51 +35,46 @@
             text-transform: uppercase; text-align: center; flex-grow: 1;
             color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
-        .contact-block { 
-            width: 250px; text-align: right; cursor: pointer; 
-            color: var(--header-ui); 
-        }
-
-        /* STYLE DES ICONES DU HEADER */
+        .contact-block { width: 250px; text-align: right; cursor: pointer; color: var(--header-ui); }
         .icon-header { stroke: var(--header-ui); }
 
-        /* MENUS DEROULANTS */
+        /* SYSTÈME DE MENUS DÉROULANTS */
         .nav-menu {
             display: none;
             position: absolute;
             background: #0f172a;
             border: 1px solid var(--accent);
             border-radius: 8px;
-            min-width: 260px;
-            padding: 5px 0;
+            min-width: 280px;
+            padding: 10px 0;
             z-index: 9999;
             list-style: none;
             margin: 0;
             box-shadow: 0 15px 40px rgba(0,0,0,0.8);
         }
 
-        /* Hover Liens Utiles */
+        /* Menu Liens utiles */
         .links-block:hover .nav-menu { display: block; top: 35px; left: 0; }
 
-        /* ORIENTATION - POSITION CENTRÉE / DÉCALÉE */
+        /* Menu Orientation - POSITION ET ALIGNEMENT DU TEXTE */
         .item-special { position: relative; font-weight: bold; cursor: pointer; }
-        
         .item-special:hover > .nav-menu { 
             display: block !important; 
-            left: 40% !important; /* Décalé vers la gauche pour être plus près du titre */
-            top: 25px !important; /* Descend légèrement sous le titre */
+            left: 40% !important; /* Décalage vers la gauche pour être près du titre */
+            top: 25px !important; 
         }
 
         .nav-menu li { 
-            padding: 12px 20px; 
+            padding: 12px 20px 12px 40px; /* TEXTE DÉCALÉ À DROITE (40px de marge gauche) */
             border-bottom: 1px solid rgba(255,255,255,0.05);
             background: transparent !important;
             color: white;
+            cursor: pointer;
         }
         .nav-menu li:hover { color: var(--accent); background: rgba(255,255,255,0.05) !important; }
-        .nav-menu a { color: white; text-decoration: none; display: block; background: transparent !important; }
+        .nav-menu a { color: white; text-decoration: none; display: block; }
 
-        /* GRILLE */
+        /* GRILLE DE CARTES */
         .container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -97,15 +92,48 @@
             backdrop-filter: blur(10px);
         }
 
-        .card h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-top: 0; font-size: 1.3rem; }
+        .card-orientation { z-index: 1000; }
+        .card h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-top: 0; }
         .card ul { list-style: none; padding: 0; margin: 15px 0 0 0; }
-        .card li { padding: 10px 0; cursor: pointer; font-size: 1.05rem; }
+        .card li { padding: 10px 0; cursor: pointer; }
         .card li:hover { color: var(--accent); }
 
-        /* MODALES */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; }
-        .modal-content { background: white; color: #1e293b; padding: 40px; border-radius: 15px; width: 90%; max-width: 600px; position: relative; }
-        .close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; }
+        /* MODALE MODULAIRE ÉLARGIE (Spécial Infographie) */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); 
+            z-index: 10000; 
+            align-items: center; justify-content: center; 
+        }
+
+        .modal-content { 
+            background: white; 
+            color: #1e293b; 
+            padding: 40px; 
+            border-radius: 15px; 
+            width: 90%; 
+            max-width: 1100px; /* Plus large pour le balisage */
+            position: relative; 
+            display: flex; 
+            gap: 30px; 
+            align-items: flex-start;
+        }
+
+        .modal-text { flex: 1; }
+        .modal-image { flex: 1.5; text-align: center; } /* Plus d'espace pour l'image */
+        .modal-image img { 
+            max-width: 100%; 
+            height: auto; 
+            border: 1px solid #ddd; 
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: #64748b; }
+        .close:hover { color: #1e293b; }
     </style>
 </head>
 <body>
@@ -133,92 +161,59 @@
         <div class="card">
             <h2>🌍 Généralités</h2>
             <ul>
-                <li onclick="openModal('info')">Histoire de la randonnée</li>
-                <li onclick="openModal('info')">Bienfait de la randonnée</li>
-                <li onclick="openModal('info')">Des randonnées pour tous</li>
+                <li onclick="chargerContenu('histoire')">Histoire de la randonnée</li>
+                <li onclick="chargerContenu('bienfaits')">Bienfait de la randonnée</li>
+                <li onclick="chargerContenu('tous')">Des randonnées pour tous</li>
             </ul>
         </div>
 
-        <div class="card" style="z-index: 1000;">
+        <div class="card card-orientation">
             <h2>🧭 Orientation & Sécurité</h2>
             <ul>
                 <li class="item-special">
                     Déterminer sa position / son orientation ▾
                     <ul class="nav-menu">
-                        <li onclick="openModal('info')">Carte topographique</li>
-                        <li onclick="openModal('info')">Balisage des itinéraires</li>
-                        <li onclick="openModal('info')">La boussole</li>
-                        <li onclick="openModal('info')">Altimètre</li>
-                        <li onclick="openModal('info')">GPS</li>
-                        <li onclick="openModal('info')">S'orienter en randonnée</li>
-                        <li onclick="openModal('info')">Logiciel de randonnée</li>
+                        <li onclick="chargerContenu('carte')">Carte topographique</li>
+                        <li onclick="chargerContenu('balisage')">Balisage des itinéraires</li>
+                        <li onclick="chargerContenu('boussole')">La boussole</li>
+                        <li onclick="chargerContenu('altimetre')">Altimètre</li>
+                        <li onclick="chargerContenu('gps')">GPS</li>
+                        <li onclick="chargerContenu('orienter')">S'orienter en randonnée</li>
+                        <li onclick="chargerContenu('logiciels')">Logiciel de randonnée</li>
                     </ul>
                 </li>
-                <li onclick="openModal('info')">Météo</li>
-                <li onclick="openModal('info')">Gestion des difficultés / Risques / Dangers</li>
-                <li onclick="openModal('info')">Hygiène / Santé / Sécurité</li>
+                <li onclick="chargerContenu('meteo')">Météo</li>
+                <li onclick="chargerContenu('risques')">Gestion des difficultés / Risques / Dangers</li>
+                <li onclick="chargerContenu('sante')">Hygiène / Santé / Sécurité</li>
             </ul>
         </div>
 
         <div class="card">
             <h2>🎒 Matériel</h2>
             <ul>
-                <li onclick="openModal('info')">Équipements</li>
-                <li onclick="openModal('info')">Alimentation</li>
-                <li onclick="openModal('info')">Comment faire son sac à dos ?</li>
+                <li onclick="chargerContenu('equipements')">Équipements</li>
+                <li onclick="chargerContenu('alimentation')">Alimentation</li>
+                <li onclick="chargerContenu('sac')">Comment faire son sac à dos ?</li>
             </ul>
         </div>
 
-        <div class="card">
-            <h2>👣 Pratique & Forme</h2>
-            <ul>
-                <li onclick="openModal('info')">Organisation d'une randonnée</li>
-                <li onclick="openModal('info')">Être en forme</li>
-            </ul>
         </div>
 
-        <div class="card">
-            <h2>🌿 Éthique & Nature</h2>
-            <ul>
-                <li onclick="openModal('info')">Environnement</li>
-                <li onclick="openModal('info')">Vers une pratique plus responsable</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h2>⛰️ Terrains</h2>
-            <ul>
-                <li onclick="openModal('info')">Massifs</li>
-                <li onclick="openModal('info')">Cotation</li>
-            </ul>
-        </div>
-    </div>
-
-    <div id="info" class="modal">
+    <div id="modalContenu" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('info')">&times;</span>
-            <h2>Information</h2>
-            <p>Le contenu détaillé sera ajouté ici prochainement.</p>
+            <span class="close" onclick="closeModal('modalContenu')">&times;</span>
+            <div class="modal-text">
+                <h2 id="titreDyna" style="color:var(--accent); margin-top:0;"></h2>
+                <div id="corpsDyna" style="line-height:1.6; font-size:1.1rem;"></div>
+            </div>
+            <div class="modal-image" id="imageDyna"></div>
         </div>
     </div>
 
     <div id="contactModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width:500px; display:block;">
             <span class="close" onclick="closeModal('contactModal')">&times;</span>
-            <h2>Contactez NASA Rando</h2>
-            <form action="https://formspree.io/f/mqkrpobj" method="POST">
-                <input type="text" name="nom" placeholder="Votre Nom" style="width:100%; margin-bottom:10px; padding:12px; border:1px solid #ccc; border-radius:5px;" required>
-                <input type="email" name="email" placeholder="Votre Email" style="width:100%; margin-bottom:10px; padding:12px; border:1px solid #ccc; border-radius:5px;" required>
-                <textarea name="message" rows="5" placeholder="Message..." style="width:100%; margin-bottom:10px; padding:12px; border:1px solid #ccc; border-radius:5px;" required></textarea>
-                <button type="submit" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">ENVOYER LE MESSAGE</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        window.onclick = function(e) { if (e.target.className === 'modal') e.target.style.display = 'none'; }
-    </script>
-</body>
-</html>
+            <h2 style="color:var(--accent)">Contactez NASA Rando</h2>
+            <form action="https://formspree.io/f/mqkrpobj" method="POST" style="display:flex; flex-direction:column; gap:10px;">
+                <input type="text" name="nom" placeholder="Votre Nom" style="padding:12px; border-radius:5px; border:1px solid #ccc;" required>
+                <input type="email" name="email" placeholder="Votre Email" style="padding:12px; border
