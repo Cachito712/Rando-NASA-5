@@ -1,25 +1,229 @@
-function chargerContenu(id) {
-    const info = SOURCE_DATA[id];
-    if(info) {
-        document.getElementById('titreDyna').innerText = info.titre;
-        document.getElementById('corpsDyna').innerHTML = info.texte;
-        
-        const imgContainer = document.getElementById('imageDyna');
-        
-        if(info.image) {
-            // On crée l'élément image proprement
-            imgContainer.innerHTML = `<img src="${info.image}" id="imgAffichee" alt="Illustration">`;
-            
-            // Test de chargement
-            const testImg = document.getElementById('imgAffichee');
-            testImg.onerror = function() {
-                console.error("Erreur de chargement de l'image. Chemin tenté : " + this.src);
-                this.style.border = "2px dashed red";
-                this.alt = "Image introuvable à l'adresse : " + info.image;
-            };
-        } else {
-            imgContainer.innerHTML = "";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>NASA Rando - Version Stable</title>
+    <style>
+        :root {
+            --accent: #60a5fa;
+            --header-ui: #fbbf24; 
+            --bg-card: rgba(0, 0, 0, 0.85);
         }
-        document.getElementById('modalContenu').style.display = 'flex';
-    }
-}
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #1e293b url('fond.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 60px; background: rgba(0,0,0,0.4);
+        }
+
+        .links-block { position: relative; width: 250px; color: var(--header-ui); }
+        .main-title { 
+            font-size: 5rem; font-weight: 900; margin: 0; 
+            text-transform: uppercase; text-align: center; flex-grow: 1;
+            color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+        .contact-block { width: 250px; text-align: right; cursor: pointer; color: var(--header-ui); }
+        .icon-header { stroke: var(--header-ui); }
+
+        /* MENUS DÉROULANTS */
+        .nav-menu {
+            display: none; position: absolute;
+            background: #0f172a; border: 1px solid var(--accent);
+            border-radius: 8px; min-width: 280px; padding: 10px 0;
+            z-index: 9999; list-style: none; margin: 0;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+        }
+
+        .links-block:hover .nav-menu { display: block; top: 35px; left: 0; }
+
+        /* ORIENTATION - POSITION DE L'ENCADRÉ */
+        .item-special { position: relative; font-weight: bold; cursor: pointer; }
+        .item-special:hover > .nav-menu { 
+            display: block !important; 
+            left: 40% !important; 
+            top: 25px !important; 
+        }
+
+        /* DÉCALAGE DU TEXTE VERS LA DROITE DANS LE MENU */
+        .nav-menu li { 
+            padding: 12px 20px 12px 60px !important; /* Décalage à droite */
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: white; cursor: pointer; text-align: left;
+        }
+        .nav-menu li:hover { color: var(--accent); background: rgba(255,255,255,0.1) !important; }
+
+        /* GRILLE */
+        .container {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 25px; max-width: 1400px; margin: 0 auto; padding: 20px;
+        }
+
+        .card {
+            background: var(--bg-card); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 15px; padding: 25px; backdrop-filter: blur(10px);
+        }
+
+        .card-orientation { z-index: 1000; }
+        .card h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-top: 0; }
+        .card ul { list-style: none; padding: 0; margin: 15px 0 0 0; }
+        .card li { padding: 10px 0; cursor: pointer; }
+        .card li:hover { color: var(--accent); }
+
+        /* MODALE LARGE */
+        .modal { 
+            display: none; position: fixed; top: 0; left: 0; 
+            width: 100%; height: 100%; background: rgba(0,0,0,0.9); 
+            z-index: 10000; align-items: center; justify-content: center; 
+        }
+
+        .modal-content { 
+            background: white; color: #1e293b; padding: 40px; 
+            border-radius: 15px; width: 90%; max-width: 1100px;
+            position: relative; display: flex; gap: 30px; align-items: center;
+        }
+
+        .modal-text { flex: 1; }
+        .modal-image { flex: 1.2; text-align: center; }
+        .modal-image img { max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #ccc; }
+
+        .close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: #333; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="links-block">
+            <span style="font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                <svg class="icon-header" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                Liens utiles
+            </span>
+            <ul class="nav-menu">
+                <li><a href="https://meteofrance.com" target="_blank" style="color:white;text-decoration:none;">Météo France</a></li>
+            </ul>
+        </div>
+        <h1 class="main-title">NASA Rando</h1>
+        <div class="contact-block" onclick="openModal('contactModal')">
+            <div style="font-weight: bold; margin-bottom: 5px;">CONTACT</div>
+            <svg class="icon-header" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2>🌍 Généralités</h2>
+            <ul>
+                <li onclick="chargerContenu('histoire')">Histoire de la randonnée</li>
+                <li onclick="chargerContenu('bienfaits')">Bienfait de la randonnée</li>
+                <li onclick="chargerContenu('tous')">Des randonnées pour tous</li>
+            </ul>
+        </div>
+
+        <div class="card card-orientation">
+            <h2>🧭 Orientation & Sécurité</h2>
+            <ul>
+                <li class="item-special">
+                    Déterminer sa position / son orientation ▾
+                    <ul class="nav-menu">
+                        <li onclick="chargerContenu('carte')">Carte topographique</li>
+                        <li onclick="chargerContenu('balisage')">Balisage des itinéraires</li>
+                        <li onclick="chargerContenu('boussole')">La boussole</li>
+                        <li onclick="chargerContenu('altimetre')">Altimètre</li>
+                        <li onclick="chargerContenu('gps')">GPS</li>
+                        <li onclick="chargerContenu('orienter')">S'orienter en randonnée</li>
+                        <li onclick="chargerContenu('logiciels')">Logiciel de randonnée</li>
+                    </ul>
+                </li>
+                <li onclick="chargerContenu('meteo')">Météo</li>
+                <li onclick="chargerContenu('risques')">Gestion des difficultés / Risques / Dangers</li>
+                <li onclick="chargerContenu('sante')">Hygiène / Santé / Sécurité</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🎒 Matériel</h2>
+            <ul>
+                <li onclick="chargerContenu('equipements')">Équipements</li>
+                <li onclick="chargerContenu('alimentation')">Alimentation</li>
+                <li onclick="chargerContenu('sac')">Comment faire son sac à dos ?</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>👣 Pratique & Forme</h2>
+            <ul>
+                <li onclick="chargerContenu('organisation')">Organisation d'une randonnée</li>
+                <li onclick="chargerContenu('forme')">Être en forme</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🌿 Éthique & Nature</h2>
+            <ul>
+                <li onclick="chargerContenu('environnement')">Environnement</li>
+                <li onclick="chargerContenu('responsabilite')">Vers une pratique plus responsable</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>⛰️ Terrains</h2>
+            <ul>
+                <li onclick="chargerContenu('massifs')">Massifs</li>
+                <li onclick="chargerContenu('cotation')">Cotation d'une randonnée</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="modalContenu" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalContenu')">&times;</span>
+            <div class="modal-text">
+                <h2 id="titreDyna" style="color:var(--accent); margin-top:0;"></h2>
+                <div id="corpsDyna"></div>
+            </div>
+            <div class="modal-image" id="imageDyna"></div>
+        </div>
+    </div>
+
+    <div id="contactModal" class="modal">
+        <div class="modal-content" style="max-width:500px; display:block;">
+            <span class="close" onclick="closeModal('contactModal')">&times;</span>
+            <h2 style="color:var(--accent)">Contactez NASA Rando</h2>
+            <form action="https://formspree.io/f/mqkrpobj" method="POST" style="display:flex; flex-direction:column; gap:10px;">
+                <input type="text" name="nom" placeholder="Votre Nom" style="padding:10px;">
+                <input type="email" name="email" placeholder="Votre Email" style="padding:10px;">
+                <textarea name="message" rows="5" placeholder="Message..." style="padding:10px;"></textarea>
+                <button type="submit" style="padding:10px; background:var(--accent); color:white; border:none; cursor:pointer;">ENVOYER</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="donnees.js"></script>
+    <script>
+        function chargerContenu(id) {
+            const info = SOURCE_DATA[id];
+            if(info) {
+                document.getElementById('titreDyna').innerText = info.titre;
+                document.getElementById('corpsDyna').innerHTML = info.texte;
+                const imgContainer = document.getElementById('imageDyna');
+                if(info.image) {
+                    imgContainer.innerHTML = `<img src="${info.image}" alt="Image">`;
+                } else {
+                    imgContainer.innerHTML = "";
+                }
+                document.getElementById('modalContenu').style.display = 'flex';
+            }
+        }
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        window.onclick = function(e) { if (e.target.className === 'modal') { e.target.style.display = 'none'; } }
+    </script>
+</body>
+</html>
