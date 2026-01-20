@@ -7,6 +7,7 @@
     <style>
         :root {
             --accent: #60a5fa;
+            --header-ui: #fbbf24; /* Jaune ambré pour une lisibilité parfaite */
             --bg-card: rgba(0, 0, 0, 0.85);
         }
 
@@ -19,17 +20,28 @@
             min-height: 100vh;
         }
 
-        /* HEADER */
+        /* HEADER AMÉLIORÉ */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 60px;
+            background: rgba(0,0,0,0.2); /* Léger voile pour aider la lecture */
         }
 
-        .links-block { position: relative; width: 250px; }
-        .main-title { font-size: 5rem; font-weight: 900; margin: 0; text-transform: uppercase; text-align: center; flex-grow: 1; }
-        .contact-block { width: 250px; text-align: right; cursor: pointer; }
+        .links-block { position: relative; width: 250px; color: var(--header-ui); }
+        .main-title { 
+            font-size: 5rem; font-weight: 900; margin: 0; 
+            text-transform: uppercase; text-align: center; flex-grow: 1;
+            color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+        }
+        .contact-block { 
+            width: 250px; text-align: right; cursor: pointer; 
+            color: var(--header-ui); 
+        }
+
+        /* STYLE DES ICONES DU HEADER */
+        .icon-header { stroke: var(--header-ui); }
 
         /* MENUS DEROULANTS */
         .nav-menu {
@@ -38,31 +50,31 @@
             background: #0f172a;
             border: 1px solid var(--accent);
             border-radius: 8px;
-            min-width: 280px;
+            min-width: 260px;
             padding: 5px 0;
             z-index: 9999;
             list-style: none;
             margin: 0;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
         }
 
         /* Hover Liens Utiles */
-        .links-block:hover .nav-menu { display: block; top: 30px; left: 0; }
+        .links-block:hover .nav-menu { display: block; top: 35px; left: 0; }
 
-        /* Hover Orientation */
+        /* ORIENTATION - POSITION CENTRÉE / DÉCALÉE */
         .item-special { position: relative; font-weight: bold; cursor: pointer; }
+        
         .item-special:hover > .nav-menu { 
             display: block !important; 
-            left: 100% !important; 
-            top: -5px !important;
-            margin-left: 10px;
+            left: 40% !important; /* Décalé vers la gauche pour être plus près du titre */
+            top: 25px !important; /* Descend légèrement sous le titre */
         }
-        /* Pont invisible pour ne pas perdre le focus */
-        .item-special::after { content: ""; position: absolute; right: -20px; width: 25px; height: 100%; top: 0; }
 
         .nav-menu li { 
             padding: 12px 20px; 
             border-bottom: 1px solid rgba(255,255,255,0.05);
-            background: transparent !important; /* Pas de surlignage bleu */
+            background: transparent !important;
+            color: white;
         }
         .nav-menu li:hover { color: var(--accent); background: rgba(255,255,255,0.05) !important; }
         .nav-menu a { color: white; text-decoration: none; display: block; background: transparent !important; }
@@ -101,7 +113,7 @@
     <header>
         <div class="links-block">
             <span style="font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                <svg class="icon-header" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
                 Liens utiles
             </span>
             <ul class="nav-menu">
@@ -112,8 +124,8 @@
         <h1 class="main-title">NASA Rando</h1>
 
         <div class="contact-block" onclick="openModal('contactModal')">
-            <div style="font-weight: bold;">CONTACT</div>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <div style="font-weight: bold; margin-bottom: 5px;">CONTACT</div>
+            <svg class="icon-header" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
         </div>
     </header>
 
@@ -186,7 +198,7 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('info')">&times;</span>
             <h2>Information</h2>
-            <p>Le contenu détaillé arrive bientôt.</p>
+            <p>Le contenu détaillé sera ajouté ici prochainement.</p>
         </div>
     </div>
 
@@ -195,10 +207,10 @@
             <span class="close" onclick="closeModal('contactModal')">&times;</span>
             <h2>Contactez NASA Rando</h2>
             <form action="https://formspree.io/f/mqkrpobj" method="POST">
-                <input type="text" name="nom" placeholder="Votre Nom" style="width:100%; margin-bottom:10px; padding:10px;" required>
-                <input type="email" name="email" placeholder="Votre Email" style="width:100%; margin-bottom:10px; padding:10px;" required>
-                <textarea name="message" rows="5" placeholder="Message..." style="width:100%; margin-bottom:10px; padding:10px;" required></textarea>
-                <button type="submit" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">ENVOYER</button>
+                <input type="text" name="nom" placeholder="Votre Nom" style="width:100%; margin-bottom:10px; padding:12px; border:1px solid #ccc; border-radius:5px;" required>
+                <input type="email" name="email" placeholder="Votre Email" style="width:100%; margin-bottom:10px; padding:12px; border:1px solid #ccc; border-radius:5px;" required>
+                <textarea name="message" rows="5" placeholder="Message..." style="width:100%; margin-bottom:10px; padding:12px; border:1px solid #ccc; border-radius:5px;" required></textarea>
+                <button type="submit" style="width:100%; padding:15px; background:var(--accent); color:white; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">ENVOYER LE MESSAGE</button>
             </form>
         </div>
     </div>
