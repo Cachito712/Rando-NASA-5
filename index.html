@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>NASA Rando - Site Complet</title>
+    <title>NASA Rando - Version Centralisée</title>
     <style>
         :root {
             --accent: #60a5fa;
@@ -36,7 +36,7 @@
         .nav-menu {
             display: none; position: absolute;
             background: #0f172a; border: 1px solid var(--accent);
-            border-radius: 8px; min-width: 300px; padding: 10px 0;
+            border-radius: 8px; min-width: 320px; padding: 10px 0;
             z-index: 9999; list-style: none; margin: 0;
             box-shadow: 0 15px 40px rgba(0,0,0,0.8);
         }
@@ -50,7 +50,7 @@
             top: 25px !important; 
         }
 
-        /* LE DÉCALAGE DEMANDÉ */
+        /* DÉCALAGE DU TEXTE À DROITE (60px) */
         .nav-menu li { 
             padding: 12px 20px 12px 60px !important; 
             border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -61,7 +61,7 @@
         /* GRILLE */
         .container {
             display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 25px; max-width: 1400px; margin: 0 auto; padding: 20px;
+            gap: 25px; max-width: 1400px; margin: 40px auto; padding: 0 20px;
         }
 
         .card {
@@ -75,24 +75,24 @@
         .card li { padding: 10px 0; cursor: pointer; }
         .card li:hover { color: var(--accent); }
 
-        /* MODALE */
+        /* MODALE ÉLARGIE */
         .modal { 
             display: none; position: fixed; top: 0; left: 0; 
-            width: 100%; height: 100%; background: rgba(0,0,0,0.9); 
+            width: 100%; height: 100%; background: rgba(0,0,0,0.95); 
             z-index: 10000; align-items: center; justify-content: center; 
         }
 
         .modal-content { 
             background: white; color: #1e293b; padding: 40px; 
             border-radius: 15px; width: 90%; max-width: 1100px;
-            position: relative; display: flex; gap: 30px; align-items: center;
+            position: relative; display: flex; gap: 30px; align-items: flex-start;
         }
 
         .modal-text { flex: 1; }
         .modal-image { flex: 1.2; text-align: center; }
         .modal-image img { max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #ccc; }
 
-        .close { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: #333; }
+        .close { position: absolute; top: 15px; right: 20px; font-size: 35px; cursor: pointer; color: #333; }
     </style>
 </head>
 <body>
@@ -100,7 +100,7 @@
     <header>
         <div class="links-block">
             <span style="font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
                 Liens utiles
             </span>
             <ul class="nav-menu">
@@ -108,9 +108,9 @@
             </ul>
         </div>
         <h1 class="main-title">NASA Rando</h1>
-        <div class="contact-block" onclick="openModal('contactModal')">
+        <div class="contact-block" onclick="openContactModal()">
             <div style="font-weight: bold; margin-bottom: 5px;">CONTACT</div>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.8"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
         </div>
     </header>
 
@@ -182,7 +182,10 @@
     <div id="modalContenu" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('modalContenu')">&times;</span>
-            <div class="modal-text"><h2 id="titreDyna" style="color:var(--accent); margin-top:0;"></h2><div id="corpsDyna"></div></div>
+            <div class="modal-text">
+                <h2 id="titreDyna" style="color:var(--accent); margin-top:0;"></h2>
+                <div id="corpsDyna" style="line-height:1.6; font-size:1.1rem;"></div>
+            </div>
             <div class="modal-image" id="imageDyna"></div>
         </div>
     </div>
@@ -194,14 +197,29 @@
             <form action="https://formspree.io/f/mqkrpobj" method="POST" style="display:flex; flex-direction:column; gap:10px;">
                 <input type="text" name="nom" placeholder="Votre Nom" style="padding:10px;">
                 <input type="email" name="email" placeholder="Votre Email" style="padding:10px;">
-                <textarea name="message" rows="5" placeholder="Message..." style="padding:10px;"></textarea>
+                <textarea name="message" rows="5" placeholder="Votre message..." style="padding:10px;"></textarea>
                 <button type="submit" style="padding:10px; background:var(--accent); color:white; border:none; cursor:pointer;">ENVOYER</button>
             </form>
         </div>
     </div>
 
-    <script src="donnees.js"></script>
     <script>
+        // 1. VOS DONNÉES
+        const SOURCE_DATA = {
+            "balisage": {
+                "titre": "Balisage des randonnées",
+                "texte": "<p>Le balisage est votre guide sur le terrain. En France, il est entretenu par la FFRandonnée.</p><ul><li><strong>GR (Blanc/Rouge) :</strong> Longue distance.</li><li><strong>PR (Jaune) :</strong> Courte distance.</li></ul>",
+                "image": "images/Balisage.png"
+            },
+            "histoire": {
+                "titre": "Histoire de la randonnée",
+                "texte": "<p>La randonnée moderne a commencé avec les premiers guides au 19ème siècle.</p>",
+                "image": "" 
+            }
+            // Vous pourrez ajouter les autres ici en suivant le même modèle
+        };
+
+        // 2. LA LOGIQUE D'AFFICHAGE
         function chargerContenu(id) {
             const info = SOURCE_DATA[id];
             if(info) {
@@ -209,18 +227,22 @@
                 document.getElementById('corpsDyna').innerHTML = info.texte;
                 const imgContainer = document.getElementById('imageDyna');
                 if(info.image) {
-                    imgContainer.innerHTML = `<img src="${info.image}" alt="Illustration">`;
+                    imgContainer.innerHTML = `<img src="${info.image}" alt="${info.titre}">`;
                 } else {
                     imgContainer.innerHTML = "";
                 }
                 document.getElementById('modalContenu').style.display = 'flex';
             } else {
-                alert("Contenu '" + id + "' en cours de rédaction...");
+                alert("Le contenu pour '" + id + "' n'est pas encore prêt.");
             }
         }
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+
+        function openContactModal() { document.getElementById('contactModal').style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        window.onclick = function(e) { if (e.target.className === 'modal') { e.target.style.display = 'none'; } }
+        
+        window.onclick = function(e) { 
+            if (e.target.className === 'modal') { e.target.style.display = 'none'; } 
+        }
     </script>
 </body>
 </html>
