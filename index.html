@@ -6,26 +6,28 @@
     <style>
         :root { --accent: #60a5fa; --header-ui: #fbbf24; --bg-card: rgba(0, 0, 0, 0.85); }
         body { margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #1e293b url('fond.jpg') no-repeat center center fixed; background-size: cover; color: white; min-height: 100vh; }
+        
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; background: rgba(0,0,0,0.4); }
         .main-title { font-size: 4rem; font-weight: 900; margin: 0; text-transform: uppercase; color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+
+        /* NAVIGATION - LIENS UTILES CORRIGÉS */
+        .links-block { position: relative; color: var(--header-ui); cursor: pointer; padding-bottom: 20px; } /* Marge pour le survol */
         
-        /* NAVIGATION ET MENUS */
-        .links-block { position: relative; color: var(--header-ui); cursor: pointer; padding: 10px; }
         .nav-menu { 
-            display: none; position: absolute; background: #0f172a; 
-            border: 1px solid var(--accent); border-radius: 8px; 
-            min-width: 280px; padding: 10px 0; z-index: 9999; 
+            display: none; position: absolute; background: #0f172a; border: 1px solid var(--accent); 
+            border-radius: 8px; min-width: 250px; padding: 10px 0; z-index: 9999; 
             list-style: none; margin: 0; box-shadow: 0 15px 40px rgba(0,0,0,0.8);
             top: 40px; left: 0;
         }
+
         .links-block:hover > .nav-menu { display: block; }
 
-        /* SOUS-MENU MÉTÉO (CORRIGÉ POUR ACCÈS FACILE) */
-        .has-submenu { position: relative; }
+        /* SOUS-MENU MÉTÉO EN CASCADE */
+        .has-submenu { position: relative; padding-right: 20px; }
         .submenu { 
-            display: none; position: absolute; left: 95%; top: -5px; 
+            display: none; position: absolute; left: 95%; top: 0; 
             background: #0f172a; border: 1px solid var(--accent); 
-            border-radius: 8px; min-width: 200px; list-style: none; padding: 5px 0;
+            border-radius: 8px; min-width: 200px; list-style: none; padding: 0; 
         }
         .has-submenu:hover > .submenu { display: block; }
 
@@ -33,7 +35,7 @@
         .nav-menu li:hover { background: rgba(255,255,255,0.1); color: var(--accent); }
         .nav-menu a { color: inherit; text-decoration: none; display: block; width: 100%; }
 
-        /* GRILLE ET CARTES */
+        /* GRILLE ET CARTES (RESTOREES) */
         .container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1400px; margin: 40px auto; padding: 0 20px; }
         .card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.2); border-radius: 15px; padding: 25px; backdrop-filter: blur(10px); }
         .card h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-top: 0; }
@@ -41,14 +43,13 @@
         .card li { padding: 8px 0; cursor: pointer; }
         .card li:hover { color: var(--accent); }
 
-        /* SPÉCIFIQUE ORIENTATION */
-        .item-special { position: relative; font-weight: bold; cursor: pointer; padding: 10px 0; color: var(--header-ui); }
-        .item-special:hover > .nav-menu { display: block !important; left: 90% !important; top: 0 !important; }
+        /* MENU ORIENTATION */
+        .item-special { position: relative; font-weight: bold; cursor: pointer; }
+        .item-special:hover > .nav-menu { display: block !important; left: 100% !important; top: 0 !important; }
 
         /* MODALES */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; }
         .modal-content { position: relative; width: 95%; height: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .modal-content img { max-width: 100%; max-height: 90vh; border-radius: 8px; }
         .close { position: absolute; top: 10px; right: 20px; color: white; font-size: 50px; cursor: pointer; z-index: 10001; }
         
         /* FORMULAIRE CONTACT */
@@ -67,4 +68,94 @@
                 Météo ⏵
                 <ul class="submenu">
                     <li><a href="https://meteofrance.com" target="_blank">Météo France</a></li>
-                    <li><a href="https://www.meteoblue.com" target="_blank">Mété
+                    <li><a href="https://www.meteoblue.com" target="_blank">Météo Blue</a></li>
+                    <li><a href="https://meteo-montagne.com" target="_blank">Météo Montagne</a></li>
+                    <li><a href="https://www.meteociel.fr" target="_blank">Météociel</a></li>
+                </ul>
+            </li>
+            <li><a href="https://www.ffrandonnee.fr" target="_blank">FFRandonnée</a></li>
+        </ul>
+    </div>
+    <h1 class="main-title">NASA Rando</h1>
+    <div style="color:var(--header-ui); cursor:pointer;" onclick="document.getElementById('contactModal').style.display='flex'"><b>CONTACT</b></div>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h2>🌍 Généralités</h2>
+        <ul>
+            <li onclick="chargerContenu('histoire')">Histoire de la randonnée</li>
+            <li onclick="chargerContenu('bienfaits')">Bienfaits</li>
+            <li onclick="chargerContenu('tous')">Pour tous</li>
+        </ul>
+    </div>
+    <div class="card" style="z-index:1000;">
+        <h2>🧭 Orientation</h2>
+        <ul>
+            <li class="item-special">
+                Déterminer sa position ▾
+                <ul class="nav-menu">
+                    <li onclick="chargerContenu('balisage')">Balisage des itinéraires</li>
+                    <li onclick="chargerContenu('carte')">Carte topographique</li>
+                    <li onclick="chargerContenu('boussole')">La boussole</li>
+                    <li onclick="chargerContenu('altimetre')">Altimètre</li>
+                    <li onclick="chargerContenu('gps')">GPS</li>
+                </ul>
+            </li>
+            <li onclick="chargerContenu('meteo')">Météo</li>
+            <li onclick="chargerContenu('risques')">Risques / Dangers</li>
+        </ul>
+    </div>
+    <div class="card">
+        <h2>🎒 Matériel</h2>
+        <ul>
+            <li onclick="chargerContenu('sac')">Sac à dos</li>
+            <li onclick="chargerContenu('equipements')">Équipements</li>
+        </ul>
+    </div>
+    <div class="card"><h2>👣 Pratique</h2><ul><li onclick="chargerContenu('organisation')">Organisation</li></ul></div>
+    <div class="card"><h2>🌿 Éthique</h2><ul><li onclick="chargerContenu('environnement')">Environnement</li></ul></div>
+    <div class="card"><h2>⛰️ Terrains</h2><ul><li onclick="chargerContenu('massifs')">Massifs</li></ul></div>
+</div>
+
+<div id="modalContenu" class="modal"><span class="close" onclick="closeModal('modalContenu')">&times;</span><div id="modalInner" class="modal-content"></div></div>
+
+<div id="contactModal" class="modal">
+    <span class="close" onclick="closeModal('contactModal')">&times;</span>
+    <div class="modal-text-box">
+        <h2 style="margin-top:0; color:var(--accent);">Contact NASA Rando</h2>
+        <form action="https://formspree.io/f/mqkrpobj" method="POST">
+            <input type="email" name="email" placeholder="Votre Email" required>
+            <textarea name="message" rows="5" placeholder="Votre message" required></textarea>
+            <button type="submit">Envoyer</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    const SOURCE_DATA = {
+        "balisage": { "type": "image", "url": "images/Balisage.png" },
+        "histoire": { "type": "texte", "titre": "Histoire", "contenu": "Contenu sur l'histoire..." }
+    };
+
+    function chargerContenu(id) {
+        const info = SOURCE_DATA[id];
+        const inner = document.getElementById('modalInner');
+        inner.innerHTML = "";
+        if(info) {
+            if(info.type === "image") {
+                inner.innerHTML = `<img src="${info.url}" style="max-width:100%;" onerror="alert('Image manquante')">`;
+            } else {
+                inner.innerHTML = `<div class="modal-text-box"><h2>${info.titre}</h2><div>${info.contenu}</div></div>`;
+            }
+        } else {
+            inner.innerHTML = `<div class="modal-text-box"><h2>${id}</h2><p>Fiche en cours de rédaction.</p></div>`;
+        }
+        document.getElementById('modalContenu').style.display = 'flex';
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    window.onclick = function(e) { if (e.target.className === 'modal') { closeModal(e.target.id); } }
+</script>
+</body>
+</html>
