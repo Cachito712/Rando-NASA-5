@@ -2,64 +2,89 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>NASA Rando - Version Consolidée</title>
+    <title>NASA Rando - Site Officiel</title>
     <style>
-        :root { --accent: #60a5fa; --header-ui: #fbbf24; --bg-card: rgba(0, 0, 0, 0.85); }
-        body { margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #1e293b url('fond.jpg') no-repeat center center fixed; background-size: cover; color: white; min-height: 100vh; }
+        :root { --accent: #60a5fa; --header-ui: #fbbf24; --bg-card: rgba(0, 0, 0, 0.9); }
         
-        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; background: rgba(0,0,0,0.4); }
-        .main-title { font-size: 3.5rem; font-weight: 900; margin: 0; text-transform: uppercase; color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.6); flex-grow: 1; text-align: center; }
-        
-        /* NAVIGATION HEADER */
-        .links-block { position: relative; color: var(--header-ui); cursor: pointer; padding: 15px; width: 180px; z-index: 1000; }
-        .nav-menu-header { 
-            display: none; position: absolute; background: #0f172a; 
-            border: 1px solid var(--accent); border-radius: 8px; 
-            min-width: 250px; padding: 10px 0; list-style: none; margin: 0; top: 50px; left: 0;
+        body { 
+            margin: 0; padding: 0; font-family: sans-serif; 
+            background: #1e293b url('fond.jpg') no-repeat center center fixed; 
+            background-size: cover; color: white; 
         }
-        .links-block:hover .nav-menu-header { display: block; }
-        
-        .has-submenu-header { position: relative; }
-        .submenu-header { 
-            display: none; position: absolute; left: 100%; top: -1px; 
-            background: #1e293b; border: 1px solid var(--accent); 
-            border-radius: 0 8px 8px 8px; min-width: 200px; list-style: none; padding: 0; 
-        }
-        .has-submenu-header:hover .submenu-header { display: block; }
 
-        .nav-menu-header li, .submenu-header li { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .nav-menu-header a, .submenu-header a { color: white; text-decoration: none; display: block; }
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 10px 50px; background: rgba(0,0,0,0.7); 
+        }
+
+        /* NAVIGATION HEADER */
+        .nav-link { position: relative; color: var(--header-ui); cursor: pointer; padding: 15px; font-weight: bold; }
+        .dropdown-header { 
+            display: none; position: absolute; top: 45px; left: 0; 
+            background: #0f172a; border: 1px solid var(--accent); 
+            padding: 10px; list-style: none; min-width: 200px; z-index: 1000;
+        }
+        .nav-link:hover .dropdown-header { display: block; }
+        .dropdown-header a { color: white; text-decoration: none; display: block; padding: 8px; }
+        .dropdown-header a:hover { color: var(--accent); }
 
         /* GRILLE 6 BLOCS */
-        .container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1400px; margin: 40px auto; padding: 0 20px; }
-        .card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.2); border-radius: 15px; padding: 25px; backdrop-filter: blur(10px); position: relative; }
-        .card h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-top: 0; }
-        .card ul { list-style: none; padding: 0; margin: 15px 0 0 0; }
-        .card li { padding: 10px 0 10px 20px; cursor: pointer; position: relative; }
-        .card li::before { content: "•"; position: absolute; left: 0; color: var(--accent); }
-
-        /* SOUS-MENU INTERNE DANS LES CARTES */
-        .item-special { font-weight: bold; color: var(--header-ui); }
-        .sub-nav-card {
-            display: none; position: absolute; background: #0f172a;
-            border: 1px solid var(--accent); border-radius: 8px;
-            min-width: 280px; left: 20px; top: 35px; z-index: 5000;
-            list-style: none; padding: 5px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        .container { 
+            display: grid; grid-template-columns: repeat(3, 1fr); 
+            gap: 20px; max-width: 1200px; margin: 30px auto; padding: 20px; 
         }
-        .item-special:hover .sub-nav-card { display: block; }
-        .sub-nav-card li { padding: 10px 20px !important; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .card { 
+            background: var(--bg-card); border: 1px solid var(--accent); 
+            border-radius: 12px; padding: 20px; 
+        }
+        .card h2 { color: var(--accent); border-bottom: 1px solid var(--accent); margin-top: 0; }
+        .card ul { list-style: none; padding: 0; }
+        .card li { padding: 8px 0; cursor: pointer; }
+        .card li:hover { color: var(--accent); }
+
+        /* SOUS-MENU ORIENTATION */
+        .nested-menu { position: relative; font-weight: bold; color: var(--header-ui); }
+        .nested-list { 
+            display: none; background: #1e293b; border: 1px solid white; 
+            padding: 10px; list-style: none; margin-top: 5px;
+        }
+        .nested-menu:hover .nested-list { display: block; }
 
         /* MODALES */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 20000; align-items: center; justify-content: center; }
-        .modal-content { position: relative; width: 95%; height: 95%; display: flex; align-items: center; justify-content: center; }
-        .modal-content img { max-width: 100%; max-height: 90vh; border-radius: 8px; }
-        .close { position: absolute; top: 20px; right: 30px; color: white; font-size: 50px; cursor: pointer; z-index: 20001; }
-        
-        .form-container { background: white; color: #333; padding: 30px; border-radius: 15px; width: 450px; }
-        .form-container input, .form-container textarea { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .form-container button { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; 
+        }
+        .modal-content { position: relative; max-width: 90%; max-height: 90%; }
+        .modal-content img { width: 100%; height: auto; border-radius: 8px; }
+        .close { position: absolute; top: -40px; right: 0; color: white; font-size: 30px; cursor: pointer; }
+
+        /* FORMULAIRE */
+        .form-box { background: white; color: #333; padding: 25px; border-radius: 10px; width: 400px; }
+        .form-box input, .form-box textarea { width: 100%; margin: 10px 0; padding: 8px; box-sizing: border-box; }
+        .form-box button { width: 100%; background: var(--accent); color: white; border: none; padding: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <header>
+    <div class="nav-link">
+        ☰ LIENS UTILES
+        <div class="dropdown-header">
+            <a href="https://meteofrance.com" target="_blank">Météo France</a>
+            <a href="https://www.meteoblue.com" target="_blank">Météo Blue</a>
+            <a href="https://www.ffrandonnee.fr" target="_blank">FFRandonnée</a>
+        </div>
+    </div>
+    <h1>NASA RANDO</h1>
+    <div class="nav-link" onclick="openContact()">
+        ✉ CONTACT
+    </div>
+</header>
+
+<div class="container">
+    <div class="card">
+        <h2>🌍 Généralités</h2>
+        <ul>
+            <li onclick="charger('histoire')">Histoire</li>
+            <li onclick="charger
