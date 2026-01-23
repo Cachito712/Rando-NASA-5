@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>NASA Rando - Version Propre</title>
+    <title>NASA Rando - Version Officielle</title>
     <style>
         :root { --accent: #60a5fa; --header-ui: #fbbf24; --bg-card: rgba(0, 0, 0, 0.85); }
         body { margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #1e293b url('fond.jpg') no-repeat center center fixed; background-size: cover; color: white; min-height: 100vh; }
@@ -11,7 +11,7 @@
         .main-title { font-size: 4rem; font-weight: 900; margin: 0; text-transform: uppercase; color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         
         /* NAVIGATION ET MENUS */
-        .links-block { position: relative; color: var(--header-ui); cursor: pointer; padding: 10px; z-index: 2000; }
+        .links-block { position: relative; color: var(--header-ui); cursor: pointer; padding: 10px; }
         .nav-menu { 
             display: none; position: absolute; background: #0f172a; 
             border: 1px solid var(--accent); border-radius: 8px; 
@@ -28,33 +28,29 @@
             border-radius: 0 8px 8px 8px; min-width: 200px; list-style: none; padding: 0; 
         }
         .has-submenu:hover .submenu { display: block; }
-
-        .nav-menu li { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); color: white; }
-        .nav-menu a { color: inherit; text-decoration: none; display: block; }
+        .nav-menu li { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .nav-menu a { color: white; text-decoration: none; display: block; }
 
         /* GRILLE ET CARTES */
-        .container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1400px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 10; }
+        .container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1400px; margin: 40px auto; padding: 0 20px; }
         .card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.2); border-radius: 15px; padding: 25px; backdrop-filter: blur(10px); }
         .card h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-top: 0; font-size: 1.4rem; }
         .card ul { list-style: none; padding: 0; margin: 15px 0 0 0; }
         .card li { padding: 10px 0 10px 20px; cursor: pointer; position: relative; }
         .card li::before { content: "•"; position: absolute; left: 0; color: var(--accent); }
+        .card li:hover { color: var(--accent); transition: 0.3s; }
 
-        /* MENU ORIENTATION DEROULE */
-        .orient-trigger { color: var(--header-ui) !important; font-weight: bold; }
-        .orient-dropdown { 
-            display: none; position: absolute; background: #0f172a; 
-            border: 1px solid var(--accent); border-radius: 8px; 
-            min-width: 220px; left: 90%; top: 0; z-index: 5000; list-style: none; padding: 0;
-        }
-        .orient-trigger:hover .orient-dropdown { display: block; }
-        .orient-dropdown li { padding: 10px 15px !important; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        /* SOUS-MENU ORIENTATION DÉROULANT */
+        .sub-dropdown { display: none; position: absolute; left: 90%; top: 0; background: #0f172a; border: 1px solid var(--accent); border-radius: 8px; min-width: 220px; list-style: none; padding: 5px 0; z-index: 5000; }
+        .has-drop:hover .sub-dropdown { display: block; }
+        .sub-dropdown li { padding: 10px 15px !important; color: white !important; border-bottom: 1px solid rgba(255,255,255,0.1); }
 
         /* MODALES */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; }
         .modal-content { background: white; color: #333; padding: 30px; border-radius: 15px; width: 90%; max-width: 800px; position: relative; text-align: center; }
         .modal-content img { max-width: 100%; height: auto; border-radius: 8px; }
         .close { position: absolute; top: 10px; right: 20px; font-size: 40px; cursor: pointer; }
+        .contact-icon { cursor: pointer; text-align: right; }
     </style>
 </head>
 <body>
@@ -63,81 +59,131 @@
     <div class="links-block">
         <b>☰ LIENS UTILES</b>
         <ul class="nav-menu">
-            <li class="has-submenu">Météo ⏵
+            <li class="has-submenu">
+                Météo ⏵
                 <ul class="submenu">
                     <li><a href="https://meteofrance.com" target="_blank">Météo France</a></li>
                     <li><a href="https://www.meteoblue.com" target="_blank">Météo Blue</a></li>
+                    <li><a href="https://meteo-montagne.com" target="_blank">Météo Montagne</a></li>
+                    <li><a href="https://www.meteociel.fr" target="_blank">Météociel</a></li>
                 </ul>
             </li>
             <li><a href="https://www.ffrandonnee.fr" target="_blank">FFRandonnée</a></li>
         </ul>
     </div>
+
     <h1 class="main-title">NASA Rando</h1>
-    <div onclick="document.getElementById('contactModal').style.display='flex'" style="cursor:pointer; text-align:right;">
-        <span style="color:var(--header-ui); font-weight:bold; font-size:0.8rem;">CONTACT</span>
-        <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+
+    <div class="contact-icon" onclick="openContact()">
+        <span style="color:var(--header-ui); font-weight:bold; display:block; font-size:0.8rem;">CONTACT</span>
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
     </div>
 </header>
 
 <div class="container">
     <div class="card">
-        <h2>🌍 Culture</h2>
+        <h2>🌍 Culture & Bases</h2>
         <ul>
             <li onclick="chargerContenu('histoire')">Histoire</li>
             <li onclick="chargerContenu('bienfaits')">Bienfaits</li>
+            <li onclick="chargerContenu('tous')">Rando pour tous</li>
         </ul>
     </div>
-    <div class="card" style="z-index: 2000;">
-        <h2>🧭 Orientation</h2>
+
+    <div class="card" style="z-index:1000;">
+        <h2>🧭 Orientation & Sécurité</h2>
         <ul>
-            <li class="orient-trigger">Déterminer sa position ▾
-                <ul class="orient-dropdown">
+            <li class="has-drop" style="color:var(--header-ui); font-weight:bold;">
+                Déterminer sa position ▾
+                <ul class="sub-dropdown">
                     <li onclick="chargerContenu('balisage')">Balisage des itinéraires</li>
-                    <li>Carte topographique</li>
-                    <li>La boussole</li>
+                    <li onclick="chargerContenu('carte')">Carte topographique</li>
+                    <li onclick="chargerContenu('boussole')">La boussole</li>
+                    <li onclick="chargerContenu('gps')">GPS</li>
                 </ul>
             </li>
-            <li>Météo</li>
+            <li onclick="chargerContenu('meteo')">Météo</li>
+            <li onclick="chargerContenu('risques')">Risques & Dangers</li>
         </ul>
     </div>
+
     <div class="card">
         <h2>🎒 Matériel</h2>
-        <ul><li>Sac à dos</li><li>Équipements</li></ul>
+        <ul>
+            <li onclick="chargerContenu('sac')">Sac à dos</li>
+            <li onclick="chargerContenu('equipements')">Équipements</li>
+        </ul>
     </div>
-    <div class="card"><h2>👣 Pratique</h2><ul><li>Organisation</li></ul></div>
-    <div class="card"><h2>🌿 Éthique</h2><ul><li>Environnement</li></ul></div>
-    <div class="card"><h2>⛰️ Terrains</h2><ul><li>Massifs</li></ul></div>
+
+    <div class="card">
+        <h2>👣 Pratique</h2>
+        <ul>
+            <li onclick="chargerContenu('organisation')">Organisation</li>
+            <li onclick="chargerContenu('forme')">Être en forme</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>🌿 Éthique</h2>
+        <ul>
+            <li onclick="chargerContenu('environnement')">Environnement</li>
+            <li onclick="chargerContenu('ethique')">Éthique</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>⛰️ Terrains</h2>
+        <ul>
+            <li onclick="chargerContenu('massifs')">Massifs</li>
+            <li onclick="chargerContenu('traces')">Traces GPS</li>
+        </ul>
+    </div>
 </div>
 
 <div id="modalContenu" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
+        <span class="close" onclick="closeModal('modalContenu')">&times;</span>
         <div id="modalInner"></div>
     </div>
 </div>
 
-<div id="contactModal" class="modal">
-    <div class="modal-content" style="max-width:400px;">
-        <span class="close" onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
-        <h2>Contact</h2>
-        <form action="https://formspree.io/f/mqkrpobj" method="POST">
-            <input type="email" name="email" placeholder="Email" required style="width:100%; padding:10px; margin:10px 0;">
-            <textarea name="message" placeholder="Message" required style="width:100%; padding:10px; margin:10px 0;"></textarea>
-            <button type="submit" style="width:100%; background:var(--accent); color:white; border:none; padding:10px; cursor:pointer;">Envoyer</button>
-        </form>
-    </div>
-</div>
-
 <script>
+    const SOURCE_DATA = {
+        "balisage": { "type": "image", "url": "images/Balisage.png" },
+        "histoire": { "type": "texte", "titre": "Histoire", "contenu": "La randonnée est née..." },
+        "bienfaits": { "type": "texte", "titre": "Bienfaits", "contenu": "Marcher est vital..." }
+    };
+
     function chargerContenu(id) {
+        const info = SOURCE_DATA[id];
         const inner = document.getElementById('modalInner');
-        if(id === 'balisage') {
-            inner.innerHTML = `<img src="images/Balisage.png" onerror="alert('Image images/Balisage.png non trouvée')">`;
+        inner.innerHTML = "";
+        if(info) {
+            if(info.type === "image") {
+                inner.innerHTML = `<img src="${info.url}" onerror="alert('Image manquante sur le serveur')">`;
+            } else {
+                inner.innerHTML = `<h2>${info.titre}</h2><p>${info.contenu}</p>`;
+            }
         } else {
-            inner.innerHTML = `<h2>${id}</h2><p>Contenu en cours de rédaction.</p>`;
+            inner.innerHTML = `<h2>${id}</h2><p>Fiche en cours de rédaction.</p>`;
         }
         document.getElementById('modalContenu').style.display = 'flex';
     }
+
+    function openContact() {
+        document.getElementById('modalInner').innerHTML = `
+            <h2 style="color:var(--accent)">Contact</h2>
+            <form action="https://formspree.io/f/mqkrpobj" method="POST" style="display:flex; flex-direction:column; gap:10px; text-align:left;">
+                <input type="email" name="email" placeholder="Votre Email" required style="padding:10px;">
+                <textarea name="message" placeholder="Votre message" rows="5" required style="padding:10px;"></textarea>
+                <button type="submit" style="padding:10px; background:var(--accent); color:white; border:none; cursor:pointer;">Envoyer</button>
+            </form>`;
+        document.getElementById('modalContenu').style.display = 'flex';
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    window.onclick = function(e) { if (e.target.className === 'modal') { closeModal('modalContenu'); } }
 </script>
+
 </body>
 </html>
