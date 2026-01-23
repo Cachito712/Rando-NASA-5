@@ -55,21 +55,24 @@
         "bienfaits": { "type": "texte", "titre": "Bienfaits", "contenu": "La marche est excellente pour le coeur..." }
     };
 
-    function chargerContenu(id) {
-        const info = SOURCE_DATA[id];
-        const inner = document.getElementById('modalInner');
-        inner.innerHTML = "";
-        if(info) {
-            if(info.type === "image") {
-                inner.innerHTML = `<img src="${info.url}" onerror="alert('ERREUR : L image ${info.url} est introuvable dans votre dossier. Vérifiez le nom et le dossier images !')">`;
-            } else {
-                inner.innerHTML = `<div class="modal-text-box"><h2>${info.titre}</h2><div>${info.contenu}</div></div>`;
-            }
-            document.getElementById('modalContenu').style.display = 'flex';
-        } else { alert("Contenu '" + id + "' en cours de rédaction..."); }
+   function chargerContenu(id) {
+    const info = SOURCE_DATA[id];
+    const inner = document.getElementById('modalInner');
+    inner.innerHTML = "";
+    if(info) {
+        if(info.type === "image") {
+            // On affiche le chemin tenté dans la console pour vérifier
+            console.log("Tentative d'accès à : " + window.location.href.replace('index.html', '') + info.url);
+            inner.innerHTML = `<img src="${info.url}" style="max-width:100%;" onerror="alert('Le navigateur cherche ici : ' + this.src + ' mais ne trouve rien.')">`;
+        } else {
+            inner.innerHTML = `<div class="modal-text-box"><h2>${info.titre}</h2><div>${info.contenu}</div></div>`;
+        }
+        document.getElementById('modalContenu').style.display = 'flex';
     }
+}
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     window.onclick = function(e) { if (e.target.className === 'modal') { closeModal(e.target.id); } }
 </script>
 </body>
 </html>
+
