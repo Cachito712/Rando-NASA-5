@@ -2,96 +2,139 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>NASA RANDO</title>
+    <title>NASA RANDO - Officiel</title>
     <style>
         :root { --accent: #60a5fa; --header-ui: #fbbf24; }
-        body { margin: 0; font-family: sans-serif; background: #1e293b; color: white; }
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #1e293b; color: white; min-height: 100vh; }
         
         /* HEADER */
-        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(0,0,0,0.8); border-bottom: 2px solid var(--accent); }
-        .nav-item { position: relative; color: var(--header-ui); cursor: pointer; font-weight: bold; padding: 10px; }
-        .dropdown { display: none; position: absolute; top: 35px; left: 0; background: #0f172a; border: 1px solid var(--accent); min-width: 200px; padding: 10px; z-index: 1000; }
-        .nav-item:hover .dropdown { display: block; }
-        .dropdown a { color: white; text-decoration: none; display: block; padding: 8px 0; border-bottom: 1px solid #334155; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; background: rgba(0,0,0,0.9); border-bottom: 2px solid var(--accent); }
+        
+        /* MENU LIENS UTILES AVEC CASCADE */
+        .nav-link { position: relative; color: var(--header-ui); cursor: pointer; font-weight: bold; padding: 15px; }
+        .dropdown-main { display: none; position: absolute; top: 45px; left: 0; background: #0f172a; border: 1px solid var(--accent); min-width: 220px; z-index: 1000; list-style: none; padding: 0; margin: 0; }
+        .nav-link:hover .dropdown-main { display: block; }
+        
+        .menu-item { position: relative; padding: 12px 20px; border-bottom: 1px solid #334155; color: white; }
+        .menu-item:hover { background: #1e293b; color: var(--accent); }
+        
+        .submenu-meteo { display: none; position: absolute; left: 100%; top: 0; background: #0f172a; border: 1px solid var(--accent); min-width: 180px; list-style: none; padding: 0; }
+        .menu-item:hover .submenu-meteo { display: block; }
+        .submenu-meteo li a { color: white; text-decoration: none; display: block; padding: 10px 20px; font-size: 0.9rem; }
+        .submenu-meteo li a:hover { background: var(--accent); color: #000; }
 
-        /* GRILLE DES 6 BLOCS */
-        .main-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 30px; max-width: 1200px; margin: auto; }
-        .card { background: rgba(0,0,0,0.5); border: 1px solid #334155; border-radius: 10px; padding: 20px; min-height: 200px; }
+        /* GRILLE 6 BLOCS */
+        .container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 30px; max-width: 1200px; margin: auto; }
+        .card { background: rgba(0,0,0,0.6); border: 1px solid #334155; border-radius: 12px; padding: 20px; }
         .card h2 { color: var(--accent); border-bottom: 1px solid var(--accent); margin-top: 0; font-size: 1.2rem; }
         .card ul { list-style: none; padding: 0; }
-        .card li { padding: 10px 0; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .card li { padding: 8px 0; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .card li:hover { color: var(--accent); }
 
         /* SOUS-MENU ORIENTATION */
-        .sub-menu { padding-left: 20px; margin-top: 10px; display: none; background: #1e293b; border-radius: 5px; }
-        .has-sub:hover .sub-menu { display: block; }
-        .sub-menu li { font-size: 0.9rem; color: #cbd5e1; }
+        .orient-sub { padding-left: 20px; display: none; background: rgba(255,255,255,0.05); margin-top: 5px; border-radius: 5px; }
+        .has-orient:hover .orient-sub { display: block; }
 
-        /* MODALE */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5000; align-items: center; justify-content: center; }
-        .modal-inner { position: relative; max-width: 90%; max-height: 90%; }
-        .modal-inner img { max-width: 100%; max-height: 85vh; border: 2px solid white; }
-        .close-btn { position: absolute; top: -50px; right: 0; color: white; font-size: 40px; cursor: pointer; }
-
-        /* FORMULAIRE CONTACT */
-        .contact-box { background: white; color: black; padding: 30px; border-radius: 10px; width: 400px; }
-        .contact-box input, .contact-box textarea { width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #ccc; box-sizing: border-box; }
-        .contact-box button { width: 100%; background: #1e293b; color: white; padding: 10px; border: none; cursor: pointer; font-weight: bold; }
+        /* MODALES */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; align-items: center; justify-content: center; }
+        .modal-box { background: white; color: black; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; position: relative; }
+        .close { position: absolute; top: 10px; right: 15px; font-size: 25px; cursor: pointer; font-weight: bold; }
+        
+        /* IMAGE PLEINE PAGE */
+        #imgContent img { width: 100%; height: auto; border-radius: 10px; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="nav-item">
+    <div class="nav-link">
         ☰ LIENS UTILES
-        <div class="dropdown">
-            <a href="https://meteofrance.com" target="_blank">Météo France</a>
-            <a href="https://www.meteoblue.com" target="_blank">Météo Blue</a>
-            <a href="https://www.ffrandonnee.fr" target="_blank">FFRandonnée</a>
-        </div>
-    </div>
-    <h1 style="margin:0; font-size: 2rem;">NASA RANDO</h1>
-    <div class="nav-item" onclick="toggleModal('contactModal', true)">✉ CONTACT</div>
-</header>
-
-<div class="main-container">
-    <div class="card">
-        <h2>🌍 Généralités</h2>
-        <ul>
-            <li onclick="ouvrirContenu('histoire')">Histoire</li>
-            <li onclick="ouvrirContenu('bienfaits')">Bienfaits</li>
+        <ul class="dropdown-main">
+            <li class="menu-item">
+                Météo ⏵
+                <ul class="submenu-meteo">
+                    <li><a href="https://meteofrance.com" target="_blank">Météo France</a></li>
+                    <li><a href="https://www.meteoblue.com" target="_blank">Météo Blue</a></li>
+                    <li><a href="https://www.meteociel.fr" target="_blank">Météociel</a></li>
+                    <li><a href="https://meteo-montagne.com" target="_blank">Météo Montagne</a></li>
+                </ul>
+            </li>
+            <li class="menu-item"><a href="https://www.ffrandonnee.fr" target="_blank" style="color:inherit; text-decoration:none;">FFRandonnée</a></li>
         </ul>
     </div>
+    <h1 style="margin:0;">NASA RANDO</h1>
+    <div class="nav-link" onclick="ouvrirContact()" style="color:var(--header-ui);">✉ CONTACT</div>
+</header>
 
+<div class="container">
+    <div class="card">
+        <h2>🌍 Généralités</h2>
+        <ul><li onclick="ouvrirTexte('Histoire', 'La randonnée est une pratique ancestrale...')">Histoire</li><li onclick="ouvrirTexte('Bienfaits', 'Marcher améliore le souffle et le moral.')">Bienfaits</li></ul>
+    </div>
     <div class="card">
         <h2>🧭 Orientation</h2>
         <ul>
-            <li class="has-sub">
-                <b>Déterminer sa position ▾</b>
-                <ul class="sub-menu">
-                    <li onclick="ouvrirContenu('balisage')">Balisage des itinéraires</li>
-                    <li onclick="ouvrirContenu('carte')">Carte topographique</li>
+            <li class="has-orient"><b>Déterminer sa position ▾</b>
+                <ul class="orient-sub">
+                    <li onclick="ouvrirImage()">Balisage des itinéraires</li>
+                    <li>Carte topographique</li>
                 </ul>
             </li>
-            <li onclick="ouvrirContenu('meteo')">Météo</li>
+            <li>Météo</li>
         </ul>
     </div>
-
-    <div class="card">
-        <h2>🎒 Matériel</h2>
-        <ul>
-            <li onclick="ouvrirContenu('sac')">Le sac à dos</li>
-        </ul>
-    </div>
-
+    <div class="card"><h2>🎒 Matériel</h2><ul><li>Le sac à dos</li></ul></div>
     <div class="card"><h2>👣 Pratique</h2><ul><li>Organisation</li></ul></div>
     <div class="card"><h2>🌿 Éthique</h2><ul><li>Environnement</li></ul></div>
     <div class="card"><h2>⛰️ Terrains</h2><ul><li>Massifs</li></ul></div>
 </div>
 
-<div id="modalContenu" class="modal">
-    <div class="modal-inner">
-        <span class="close-btn" onclick="toggleModal('modalContenu', false)">&times;</span>
-        <div id="corpsModale"></div>
+<div id="modalContact" class="modal">
+    <div class="modal-box">
+        <span class="close" onclick="fermerTout()">&times;</span>
+        <h2 style="margin-top:0;">Contact</h2>
+        <form action="https://formspree.io/f/mqkrpobj" method="POST">
+            <input type="email" name="email" placeholder="Votre Email" style="width:100%; padding:10px; margin-bottom:10px;" required>
+            <textarea name="message" placeholder="Votre message" rows="5" style="width:100%; padding:10px; margin-bottom:10px;" required></textarea>
+            <button type="submit" style="width:100%; padding:10px; background:#1e293b; color:white; border:none; cursor:pointer;">Envoyer</button>
+        </form>
     </div>
 </div>
+
+<div id="modalContenu" class="modal">
+    <div class="modal-box" id="imgContent">
+        <span class="close" onclick="fermerTout()">&times;</span>
+        <div id="remplissage"></div>
+    </div>
+</div>
+
+<script>
+    function ouvrirContact() {
+        document.getElementById('modalContact').style.display = 'flex';
+    }
+
+    function ouvrirImage() {
+        const zone = document.getElementById('remplissage');
+        zone.innerHTML = `<img src="images/Balisage.png" onerror="alert('Image manquante sur GitHub')">`;
+        document.getElementById('modalContenu').style.display = 'flex';
+    }
+
+    function ouvrirTexte(titre, texte) {
+        const zone = document.getElementById('remplissage');
+        zone.innerHTML = `<h2>${titre}</h2><p>${texte}</p>`;
+        document.getElementById('modalContenu').style.display = 'flex';
+    }
+
+    function fermerTout() {
+        document.getElementById('modalContact').style.display = 'none';
+        document.getElementById('modalContenu').style.display = 'none';
+    }
+
+    // Fermer si on clique sur le fond noir
+    window.onclick = function(event) {
+        if (event.target.className === 'modal') { fermerTout(); }
+    }
+</script>
+
+</body>
+</html>
