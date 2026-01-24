@@ -143,30 +143,45 @@
 
 <script>
     const SOURCE_DATA = {
-        "balisage": { "type": "image", "url": "images/Balisage.png" },
-        "histoire": { "type": "texte", "titre": "Histoire", "contenu": "L'histoire de la randonnée..." },
-        "bienfaits": { "type": "texte", "titre": "Bienfaits", "contenu": "La marche est excellente pour le coeur..." }
+    "balisage": { "type": "image", "url": "images/Balisage.png" },
+    "histoire": { "type": "doc", "url": "documentation/histoire.html" },
+    "bienfaits": { "type": "doc", "url": "documentation/bienfaits.html" }
     };
 
-    function chargerContenu(id) {
-        const info = SOURCE_DATA[id];
-        const inner = document.getElementById('modalInner');
-        inner.innerHTML = "";
-        if(info) {
-            if(info.type === "image") {
-                inner.innerHTML = `<img src="${info.url}" style="max-width:100%; border-radius:8px;" onerror="alert('Fichier images/Balisage.png introuvable.')">`;
-            } else {
-                inner.innerHTML = `<div class="modal-text-box"><h2>${info.titre}</h2><div>${info.contenu}</div></div>`;
-            }
-            document.getElementById('modalContenu').style.display = 'flex';
-        } else {
-            inner.innerHTML = `<div class="modal-text-box"><h2>${id}</h2><p>Contenu en cours de rédaction.</p></div>`;
-            document.getElementById('modalContenu').style.display = 'flex';
+   async function chargerContenu(id) {
+    const info = SOURCE_DATA[id];
+    const inner = document.getElementById('modalInner');
+    inner.innerHTML = ""; // On vide la modale
+
+    if (!info) {
+        inner.innerHTML = `<div class="modal-text-box"><h2>${id}</h2><p>Contenu en cours de rédaction.</p></div>`;
+        document.getElementById('modalContenu').style.display = 'flex';
+        return;
+    }
+
+    if (info.type === "image") {
+        inner.innerHTML = `<img src="${info.url}" style="max-width:100%;" onerror="alert('Image introuvable')">`;
+    } 
+    else if (info.type === "doc") {
+        try {
+            // Le fameux FETCH : on va chercher le fichier
+            const response = await fetch(info.url);
+            if (!response.ok) throw new Error("Fichier non trouvé");
+            const html = await response.text();
+            
+            // On injecte le contenu du fichier dans une boîte blanche
+            inner.innerHTML = `<div class="modal-text-box">${html}</div>`;
+        } catch (error) {
+            inner.innerHTML = `<div class="modal-text-box"><p style="color:red;">Erreur lors du chargement de la documentation.</p></div>`;
         }
     }
+    
+    document.getElementById('modalContenu').style.display = 'flex';
+}
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     window.onclick = function(e) { if (e.target.className === 'modal') { closeModal(e.target.id); } }
 </script>
 </body>
 </html>
+
