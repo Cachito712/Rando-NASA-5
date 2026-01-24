@@ -108,13 +108,14 @@
 </div>
 
 <script>
-    // Configuration modulaire : on pointe vers les fichiers HTML externes
+    // Configuration : "doc" indique au site d'aller lire le fichier externe
     const SOURCE_DATA = {
         "balisage": { "type": "image", "url": "images/Balisage.png" },
         "histoire": { "type": "doc", "url": "documentation/histoire.html" },
         "bienfaits": { "type": "doc", "url": "documentation/bienfaits.html" }
     };
 
+    // La fonction doit être "async" pour utiliser "fetch"
     async function chargerContenu(id) {
         const info = SOURCE_DATA[id];
         const inner = document.getElementById('modalInner');
@@ -128,12 +129,23 @@
         } 
         else if(info.type === "doc") {
             try {
+                // Étape 1 : On appelle le fichier
                 const response = await fetch(info.url);
-                if (!response.ok) throw new Error("Fichier non trouvé");
+                
+                // Étape 2 : Si le fichier n'est pas trouvé (Erreur 404)
+                if (!response.ok) {
+                    throw new Error("Le serveur répond que le fichier n'existe pas à l'adresse : " + info.url);
+                }
+                
+                // Étape 3 : On transforme le fichier en texte
                 const textContent = await response.text();
+                
+                // Étape 4 : On l'affiche
                 inner.innerHTML = `<div class="modal-text-box">${textContent}</div>`;
+                
             } catch (err) {
-                inner.innerHTML = `<div class="modal-text-box"><h2>Erreur</h2><p>Impossible de charger le fichier : ${info.url}. Vérifiez qu'il existe dans le dossier documentation et que vous êtes sur un serveur (GitHub Pages).</p></div>`;
+                // Affichage de l'erreur précise dans la modale
+                inner.innerHTML = `<div class="modal-text-box"><h2>Erreur de chargement</h2><p>${err.message}</p><p>Note : Si vous testez sur votre PC sans passer par GitHub, c'est normal que cela soit bloqué.</p></div>`;
             }
         }
         document.getElementById('modalContenu').style.display = 'flex';
@@ -144,3 +156,4 @@
 </script>
 </body>
 </html>
+
