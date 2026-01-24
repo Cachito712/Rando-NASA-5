@@ -147,35 +147,33 @@
     const info = SOURCE_DATA[id];
     const inner = document.getElementById('modalInner');
     
-    // On vide et on remonte TOUT EN HAUT avant de charger
-    inner.innerHTML = ""; 
+    // On vide tout et on remonte l'ascenseur avant de charger
+    inner.innerHTML = "";
     inner.scrollTop = 0; 
 
-    if(!info) {
-        inner.innerHTML = `<div class="modal-text-box"><h2>${id}</h2><p>Contenu en cours de rédaction.</p></div>`;
-    } 
-    else if(info.type === "doc") {
+    if (info && info.type === "doc") {
         try {
             const response = await fetch(info.url);
-            const textContent = await response.text();
+            const html = await response.text();
             
-            // On injecte le texte dans la div propre
-            inner.innerHTML = `<div class="modal-text-box">${textContent}</div>`;
+            // On injecte le contenu dans la boîte
+            inner.innerHTML = `<div class="modal-text-box">${html}</div>`;
             
-            // Force le navigateur à recalculer la position zéro
-            setTimeout(() => { inner.scrollTop = 0; }, 50);
+            // Petite sécurité : on s'assure que l'affichage commence bien en haut
+            setTimeout(() => { inner.scrollTop = 0; }, 100);
             
-        } catch (err) {
-            inner.innerHTML = `<div class="modal-text-box">Erreur de chargement.</div>`;
+        } catch (error) {
+            inner.innerHTML = "<div class='modal-text-box'>Erreur de chargement.</div>";
         }
     }
-    document.getElementById('modalContenu').style.display = 'flex';
+    document.getElementById('modalContenu').style.display = 'block'; // 'block' et non 'flex'
 }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     window.onclick = function(e) { if (e.target.className === 'modal') { closeModal(e.target.id); } }
 </script>
 </body>
 </html>
+
 
 
 
