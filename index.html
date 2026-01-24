@@ -13,13 +13,8 @@
         .links-block { position: relative; color: var(--header-ui); cursor: pointer; }
         .links-block:hover .nav-menu { display: block; top: 30px; left: 0; }
         
-        /* AJUSTEMENT DU MENU DÉROULANT VERS LA GAUCHE */
         .item-special { position: relative; font-weight: bold; cursor: pointer; padding: 10px 0; }
-        .item-special:hover > .nav-menu { 
-            display: block !important; 
-            left: -320px !important; /* Décalage vers la gauche */
-            top: 0 !important; 
-        }
+        .item-special:hover > .nav-menu { display: block !important; left: -320px !important; top: 0 !important; }
 
         .nav-menu li { padding: 12px 20px !important; border-bottom: 1px solid rgba(255,255,255,0.05); color: white; cursor: pointer; }
         .nav-menu li:hover { color: var(--accent); background: rgba(255,255,255,0.1); }
@@ -31,15 +26,13 @@
         .card li { padding: 8px 0; cursor: pointer; }
         .card li:hover { color: var(--accent); }
         
-        /* MODALES */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; }
-        .modal-content { position: relative; width: 95%; height: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .modal-content { position: relative; width: 95%; height: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-y: auto; }
         .close { position: absolute; top: 10px; right: 20px; color: white; font-size: 50px; cursor: pointer; z-index: 10001; }
         
-        /* FORMULAIRE DE CONTACT */
-        .modal-text-box { background: white; color: #333; padding: 30px; border-radius: 10px; width: 100%; max-width: 450px; }
-        .modal-text-box h2 { margin-top: 0; color: var(--accent); border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .modal-text-box input, .modal-text-box textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: inherit; }
+        .modal-text-box { background: white; color: #333; padding: 30px; border-radius: 10px; width: 100%; max-width: 800px; line-height: 1.6; }
+        .modal-text-box h2, .modal-text-box h1 { color: var(--accent); margin-top: 0; }
+        .modal-text-box input, .modal-text-box textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
         .modal-text-box button { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
     </style>
 </head>
@@ -66,12 +59,10 @@
             <li onclick="chargerContenu('tous')">Pour tous</li>
         </ul>
     </div>
-
     <div class="card" style="z-index:1000;">
         <h2>🧭 Orientation</h2>
         <ul>
-            <li class="item-special">
-                Déterminer sa position ▾
+            <li class="item-special">Déterminer sa position ▾
                 <ul class="nav-menu">
                     <li onclick="chargerContenu('balisage')">Balisage des itinéraires</li>
                     <li onclick="chargerContenu('carte')">Carte topographique</li>
@@ -87,7 +78,6 @@
             <li onclick="chargerContenu('sante')">Santé / Sécurité</li>
         </ul>
     </div>
-
     <div class="card">
         <h2>🎒 Matériel</h2>
         <ul>
@@ -96,36 +86,12 @@
             <li onclick="chargerContenu('sac')">Sac à dos</li>
         </ul>
     </div>
-
-    <div class="card">
-        <h2>👣 Pratique</h2>
-        <ul>
-            <li onclick="chargerContenu('organisation')">Organisation</li>
-            <li onclick="chargerContenu('forme')">Être en forme</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h2>🌿 Éthique</h2>
-        <ul>
-            <li onclick="chargerContenu('environnement')">Environnement</li>
-            <li onclick="chargerContenu('responsabilite')">Pratique responsable</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h2>⛰️ Terrains</h2>
-        <ul>
-            <li onclick="chargerContenu('massifs')">Massifs</li>
-            <li onclick="chargerContenu('cotation')">Cotation</li>
-        </ul>
-    </div>
+    <div class="card"><h2>👣 Pratique</h2><ul><li onclick="chargerContenu('organisation')">Organisation</li><li onclick="chargerContenu('forme')">Être en forme</li></ul></div>
+    <div class="card"><h2>🌿 Éthique</h2><ul><li onclick="chargerContenu('environnement')">Environnement</li><li onclick="chargerContenu('responsabilite')">Pratique responsable</li></ul></div>
+    <div class="card"><h2>⛰️ Terrains</h2><ul><li onclick="chargerContenu('massifs')">Massifs</li><li onclick="chargerContenu('cotation')">Cotation</li></ul></div>
 </div>
 
-<div id="modalContenu" class="modal">
-    <span class="close" onclick="closeModal('modalContenu')">&times;</span>
-    <div id="modalInner" class="modal-content"></div>
-</div>
+<div id="modalContenu" class="modal"><span class="close" onclick="closeModal('modalContenu')">&times;</span><div id="modalInner" class="modal-content"></div></div>
 
 <div id="contactModal" class="modal">
     <span class="close" onclick="closeModal('contactModal')">&times;</span>
@@ -142,46 +108,39 @@
 </div>
 
 <script>
+    // Configuration modulaire : on pointe vers les fichiers HTML externes
     const SOURCE_DATA = {
-    "balisage": { "type": "image", "url": "images/Balisage.png" },
-    "histoire": { "type": "doc", "url": "documentation/histoire.html" },
-    "bienfaits": { "type": "doc", "url": "documentation/bienfaits.html" }
+        "balisage": { "type": "image", "url": "images/Balisage.png" },
+        "histoire": { "type": "doc", "url": "documentation/histoire.html" },
+        "bienfaits": { "type": "doc", "url": "documentation/bienfaits.html" }
     };
 
-   async function chargerContenu(id) {
-    const info = SOURCE_DATA[id];
-    const inner = document.getElementById('modalInner');
-    inner.innerHTML = ""; // On vide la modale
+    async function chargerContenu(id) {
+        const info = SOURCE_DATA[id];
+        const inner = document.getElementById('modalInner');
+        inner.innerHTML = ""; 
 
-    if (!info) {
-        inner.innerHTML = `<div class="modal-text-box"><h2>${id}</h2><p>Contenu en cours de rédaction.</p></div>`;
-        document.getElementById('modalContenu').style.display = 'flex';
-        return;
-    }
-
-    if (info.type === "image") {
-        inner.innerHTML = `<img src="${info.url}" style="max-width:100%;" onerror="alert('Image introuvable')">`;
-    } 
-    else if (info.type === "doc") {
-        try {
-            // Le fameux FETCH : on va chercher le fichier
-            const response = await fetch(info.url);
-            if (!response.ok) throw new Error("Fichier non trouvé");
-            const html = await response.text();
-            
-            // On injecte le contenu du fichier dans une boîte blanche
-            inner.innerHTML = `<div class="modal-text-box">${html}</div>`;
-        } catch (error) {
-            inner.innerHTML = `<div class="modal-text-box"><p style="color:red;">Erreur lors du chargement de la documentation.</p></div>`;
+        if(!info) {
+            inner.innerHTML = `<div class="modal-text-box"><h2>${id}</h2><p>Contenu en cours de rédaction.</p></div>`;
+        } 
+        else if(info.type === "image") {
+            inner.innerHTML = `<img src="${info.url}" style="max-width:100%; border-radius:8px;" onerror="alert('Image manquante : ' + this.src)">`;
+        } 
+        else if(info.type === "doc") {
+            try {
+                const response = await fetch(info.url);
+                if (!response.ok) throw new Error("Fichier non trouvé");
+                const textContent = await response.text();
+                inner.innerHTML = `<div class="modal-text-box">${textContent}</div>`;
+            } catch (err) {
+                inner.innerHTML = `<div class="modal-text-box"><h2>Erreur</h2><p>Impossible de charger le fichier : ${info.url}. Vérifiez qu'il existe dans le dossier documentation et que vous êtes sur un serveur (GitHub Pages).</p></div>`;
+            }
         }
+        document.getElementById('modalContenu').style.display = 'flex';
     }
-    
-    document.getElementById('modalContenu').style.display = 'flex';
-}
 
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     window.onclick = function(e) { if (e.target.className === 'modal') { closeModal(e.target.id); } }
 </script>
 </body>
 </html>
-
