@@ -116,12 +116,14 @@
     };
 
     // La fonction doit être "async" pour utiliser "fetch"
-    async function chargerContenu(id) {
-        const info = SOURCE_DATA[id];
-        const inner = document.getElementById('modalInner');
-        inner.innerHTML = ""; 
+ async function chargerContenu(id) {
+    const info = SOURCE_DATA[id];
+    const inner = document.getElementById('modalInner'); // C'est l'élément qui défile
+    
+    inner.innerHTML = ""; 
+    inner.scrollTop = 0; // <--- AJOUTEZ CETTE LIGNE ICI pour remonter en haut
 
-        if(!info) {
+    if(!info) {
             inner.innerHTML = `<div class="modal-text-box"><h2>${id}</h2><p>Contenu en cours de rédaction.</p></div>`;
         } 
         else if(info.type === "image") {
@@ -156,4 +158,5 @@
 </script>
 </body>
 </html>
+
 
