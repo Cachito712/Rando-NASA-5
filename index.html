@@ -33,7 +33,7 @@
         .card li { padding: 8px 0; cursor: pointer; }
         .card li:hover { color: var(--accent); }
         
-        /* MODIFICATION : Changement de center vers flex-start pour éviter de couper le haut du texte */
+        /* CORRECTIF : Aligner sur flex-start pour ne pas cacher le haut du texte et overflow-y sur la modale elle-même */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 0; }
         .modal-content { position: relative; width: 95%; display: flex; flex-direction: column; align-items: center; }
         .close { position: fixed; top: 10px; right: 20px; color: white; font-size: 50px; cursor: pointer; z-index: 10001; }
@@ -127,11 +127,32 @@
     async function chargerContenu(id) {
         const info = SOURCE_DATA[id];
         const inner = document.getElementById('modalInner');
-        const modal = document.getElementById('modalContenu');
+        const modalElement = document.getElementById('modalContenu');
         inner.innerHTML = ""; 
 
         if(!info) {
             inner.innerHTML = `<div class="modal-text-box"><h2>${id}</h2><p>Contenu en cours de rédaction.</p></div>`;
         } 
         else if(info.type === "image") {
-            inner.innerHTML = `<img src="${info.url}" style="max-width:100%; border-radius:8px;" onerror="alert('Image
+            inner.innerHTML = `<img src="${info.url}" style="max-width:100%; border-radius:8px;" onerror="alert('Image manquante : ' + this.src)">`;
+        } 
+        else if(info.type === "doc") {
+            try {
+                const response = await fetch(info.url);
+                if (!response.ok) throw new Error("Fichier non trouvé");
+                const textContent = await response.text();
+                inner.innerHTML = `<div class="modal-text-box">${textContent}</div>`;
+            } catch (err) {
+                inner.innerHTML = `<div class="modal-text-box"><h2>Erreur</h2><p>Impossible de charger le fichier : ${info.url}.</p></div>`;
+            }
+        }
+        modalElement.style.display = 'flex';
+        // CORRECTIF JS : Remonte la barre de défilement tout en haut à chaque ouverture
+        modalElement.scrollTop = 0;
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    window.onclick = function(e) { if (e.target.className === 'modal') { closeModal(e.target.id); } }
+</script>
+</body>
+</html>
