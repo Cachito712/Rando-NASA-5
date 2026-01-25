@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>NASA Rando - Site Officiel</title>
     <style>
-        :root { --accent: #60a5fa; --header-ui: #fbbf24; --bg-card: rgba(0, 0, 0, 0.85); }
+        :root { --accent: #60a5fa; --header-ui: #fbbf24; --bg-card: rgba(0,0,0,0.85); }
         body { margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #1e293b url('fond.jpg') no-repeat center center fixed; background-size: cover; color: white; min-height: 100vh; }
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; background: rgba(0,0,0,0.4); }
         .main-title { font-size: 4rem; font-weight: 900; margin: 0; text-transform: uppercase; color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
@@ -15,7 +15,7 @@
         
         .item-special { position: relative; font-weight: bold; cursor: pointer; padding: 10px 0; }
         
-        /* MODIFICATION : Décalage du texte vers la droite dans le sous-menu "Déterminer sa position" */
+        /* Décalage du texte vers la droite dans le sous-menu "Déterminer sa position" */
         .item-special:hover > .nav-menu { 
             display: block !important; 
             left: -320px !important; 
@@ -33,12 +33,12 @@
         .card li { padding: 8px 0; cursor: pointer; }
         .card li:hover { color: var(--accent); }
         
-        /* MODIFICATION : Correction du défilement pour ne plus couper le haut des textes */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; overflow-y: auto; padding: 40px 0; }
-        .modal-content { position: relative; width: 95%; margin: auto; display: flex; flex-direction: column; align-items: center; }
+        /* CORRECTION : On aligne le contenu en haut (flex-start) pour éviter que le début soit caché */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; overflow-y: auto; display: none; justify-content: center; align-items: flex-start; padding: 50px 0; }
+        .modal-content { position: relative; width: 95%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
         .close { position: fixed; top: 10px; right: 20px; color: white; font-size: 50px; cursor: pointer; z-index: 10001; }
         
-        .modal-text-box { background: white; color: #333; padding: 30px; border-radius: 10px; width: 100%; max-width: 800px; line-height: 1.6; }
+        .modal-text-box { background: white; color: #333; padding: 30px; border-radius: 10px; width: 100%; max-width: 800px; line-height: 1.6; margin-bottom: 50px; }
         .modal-text-box h2, .modal-text-box h1 { color: var(--accent); margin-top: 0; }
         .modal-text-box input, .modal-text-box textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
         .modal-text-box button { width: 100%; padding: 12px; background: var(--accent); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
@@ -50,30 +50,4 @@
     <div class="links-block">
         <b>☰ Liens utiles</b>
         <ul class="nav-menu">
-            <li><a href="https://meteofrance.com" target="_blank" style="color:white; text-decoration:none;">Météo France</a></li>
-            <li><a href="https://www.meteoblue.com" target="_blank" style="color:white; text-decoration:none;">Météo Blue</a></li>
-        </ul>
-    </div>
-    <h1 class="main-title">NASA Rando</h1>
-    <div style="color:var(--header-ui); cursor:pointer;" onclick="document.getElementById('contactModal').style.display='block'"><b>CONTACT</b></div>
-</header>
-
-<div class="container">
-    <div class="card">
-        <h2>🌍 Généralités</h2>
-        <ul>
-            <li onclick="chargerContenu('histoire')">Histoire de la randonnée</li>
-            <li onclick="chargerContenu('bienfaits')">Bienfaits</li>
-            <li onclick="chargerContenu('tous')">Pour tous</li>
-        </ul>
-    </div>
-    <div class="card" style="z-index:1000;">
-        <h2>🧭 Orientation</h2>
-        <ul>
-            <li class="item-special">Déterminer sa position ▾
-                <ul class="nav-menu">
-                    <li onclick="chargerContenu('balisage')">Balisage des itinéraires</li>
-                    <li onclick="chargerContenu('carte')">Carte topographique</li>
-                    <li onclick="chargerContenu('boussole')">La boussole</li>
-                    <li onclick="chargerContenu('altimetre')">Altimètre</li>
-                    <li onclick="chargerContenu('gps')">GPS</li>
+            <li><a href
