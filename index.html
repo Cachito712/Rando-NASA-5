@@ -9,9 +9,9 @@
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; background: rgba(0,0,0,0.4); }
         .main-title { font-size: 4rem; font-weight: 900; margin: 0; text-transform: uppercase; color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         
-        /* Menu Liens utiles - Rapproché à 22px pour éviter la coupure au survol */
+        /* Correction menu "Liens utiles" pour qu'il ne disparaisse pas */
         .links-block { position: relative; color: var(--header-ui); cursor: pointer; padding: 10px 0; }
-        .nav-menu { display: none; position: absolute; background: #0f172a; border: 1px solid var(--accent); border-radius: 8px; min-width: 300px; padding: 10px 0; z-index: 9999; list-style: none; margin: 0; box-shadow: 0 15px 40px rgba(0,0,0,0.8); top: 22px; left: 0; }
+        .nav-menu { display: none; position: absolute; background: #0f172a; border: 1px solid var(--accent); border-radius: 8px; min-width: 320px; padding: 10px 0; z-index: 9999; list-style: none; margin: 0; box-shadow: 0 15px 40px rgba(0,0,0,0.8); top: 25px; left: 0; }
         .links-block:hover .nav-menu { display: block; }
         
         /* Sous-menu Météo */
@@ -23,11 +23,7 @@
         .nav-menu li:hover { color: var(--accent); background: rgba(255,255,255,0.1); }
         .nav-menu a { color: inherit; text-decoration: none; display: block; }
         
-        /* Menu Orientation */
-        .item-special { position: relative; font-weight: bold; cursor: pointer; padding: 10px 0; }
-        .item-special:hover > .nav-menu { display: block !important; left: -300px !important; top: 0 !important; }
-
-        /* Structure des 6 cartes */
+        /* Grille des 6 cartes sur 2 lignes */
         .container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1400px; margin: 40px auto; padding: 0 20px; }
         .card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.2); border-radius: 15px; padding: 25px; backdrop-filter: blur(10px); }
         .card h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-top: 0; }
@@ -74,23 +70,12 @@
             <li onclick="chargerContenu('tous')">Pour tous</li>
         </ul>
     </div>
-    <div class="card" style="z-index:1000;">
+    <div class="card">
         <h2>🧭 Orientation</h2>
         <ul>
-            <li class="item-special">Déterminer sa position ▾
-                <ul class="nav-menu">
-                    <li onclick="chargerContenu('balisage')">Balisage des itinéraires</li>
-                    <li onclick="chargerContenu('carte')">Carte topographique</li>
-                    <li onclick="chargerContenu('boussole')">La boussole</li>
-                    <li onclick="chargerContenu('altimetre')">Altimètre</li>
-                    <li onclick="chargerContenu('gps')">GPS</li>
-                    <li onclick="chargerContenu('orienter')">S'orienter</li>
-                    <li onclick="chargerContenu('logiciels')">Logiciels</li>
-                </ul>
-            </li>
-            <li onclick="chargerContenu('meteo')">Météo</li>
-            <li onclick="chargerContenu('risques')">Risques / Dangers</li>
-            <li onclick="chargerContenu('sante')">Santé / Sécurité</li>
+            <li onclick="chargerContenu('balisage')">Balisage des itinéraires</li>
+            <li onclick="chargerContenu('carte')">Carte topographique</li>
+            <li onclick="chargerContenu('boussole')">La boussole</li>
         </ul>
     </div>
     <div class="card">
@@ -101,4 +86,11 @@
             <li onclick="chargerContenu('sac')">Sac à dos</li>
         </ul>
     </div>
-    <div class
+    <div class="card">
+        <h2>👣 Pratique</h2>
+        <ul>
+            <li onclick="chargerContenu('organisation')">Organisation</li>
+            <li onclick="chargerContenu('forme')">Être en forme</li>
+        </ul>
+    </div>
+    <div
