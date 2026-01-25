@@ -9,12 +9,12 @@
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; background: rgba(0,0,0,0.4); }
         .main-title { font-size: 4rem; font-weight: 900; margin: 0; text-transform: uppercase; color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         
-        /* Correction Proximité Liens Utiles */
+        /* Menu Liens utiles */
         .nav-menu { display: none; position: absolute; background: #0f172a; border: 1px solid var(--accent); border-radius: 8px; min-width: 320px; padding: 10px 0; z-index: 9999; list-style: none; margin: 0; box-shadow: 0 15px 40px rgba(0,0,0,0.8); }
         .links-block { position: relative; color: var(--header-ui); cursor: pointer; padding: 10px 0; }
-        .links-block:hover .nav-menu { display: block; top: 22px; left: 0; }
+        .links-block:hover .nav-menu { display: block; top: 22px; left: 0; } /* Rapproché pour la souris */
         
-        /* Style Sous-menu Météo */
+        /* Sous-menu Météo */
         .sub-menu-trigger { position: relative; }
         .sub-menu { display: none; position: absolute; left: 100%; top: -1px; background: #0f172a; border: 1px solid var(--accent); border-radius: 0 8px 8px 0; min-width: 200px; list-style: none; padding: 0; }
         .sub-menu-trigger:hover .sub-menu { display: block; }
@@ -23,6 +23,7 @@
         .nav-menu li:hover { color: var(--accent); background: rgba(255,255,255,0.1); }
         .nav-menu a { color: inherit; text-decoration: none; display: block; }
         
+        /* Menu spécial Orientation */
         .item-special { position: relative; font-weight: bold; cursor: pointer; padding: 10px 0; }
         .item-special:hover > .nav-menu { display: block !important; left: -320px !important; top: 0 !important; }
 
@@ -70,70 +71,3 @@
             <li onclick="chargerContenu('histoire')">Histoire de la randonnée</li>
             <li onclick="chargerContenu('bienfaits')">Bienfaits</li>
             <li onclick="chargerContenu('tous')">Pour tous</li>
-        </ul>
-    </div>
-    <div class="card" style="z-index:1000;">
-        <h2>🧭 Orientation</h2>
-        <ul>
-            <li class="item-special">Déterminer sa position ▾
-                <ul class="nav-menu">
-                    <li onclick="chargerContenu('balisage')">Balisage des itinéraires</li>
-                    <li onclick="chargerContenu('carte')">Carte topographique</li>
-                    <li onclick="chargerContenu('boussole')">La boussole</li>
-                    <li onclick="chargerContenu('altimetre')">Altimètre</li>
-                    <li onclick="chargerContenu('gps')">GPS</li>
-                    <li onclick="chargerContenu('orienter')">S'orienter</li>
-                    <li onclick="chargerContenu('logiciels')">Logiciels</li>
-                </ul>
-            </li>
-            <li onclick="chargerContenu('meteo')">Météo</li>
-            <li onclick="chargerContenu('risques')">Risques / Dangers</li>
-            <li onclick="chargerContenu('sante')">Santé / Sécurité</li>
-        </ul>
-    </div>
-    <div class="card">
-        <h2>🎒 Matériel</h2>
-        <ul>
-            <li onclick="chargerContenu('equipements')">Équipements</li>
-            <li onclick="chargerContenu('alimentation')">Alimentation</li>
-            <li onclick="chargerContenu('sac')">Sac à dos</li>
-        </ul>
-    </div>
-    <div class="card"><h2>👣 Pratique</h2><ul><li onclick="chargerContenu('organisation')">Organisation</li><li onclick="chargerContenu('forme')">Être en forme</li></ul></div>
-    <div class="card"><h2>🌿 Éthique</h2><ul><li onclick="chargerContenu('environnement')">Environnement</li><li onclick="chargerContenu('responsabilite')">Pratique responsable</li></ul></div>
-    <div class="card"><h2>⛰️ Terrains</h2><ul><li onclick="chargerContenu('massifs')">Massifs</li><li onclick="chargerContenu('cotation')">Cotation</li></ul></div>
-</div>
-
-<div id="modalContenu" class="modal"><span class="close" onclick="closeModal('modalContenu')">&times;</span><div id="modalInner" class="modal-content"></div></div>
-
-<div id="contactModal" class="modal">
-    <span class="close" onclick="closeModal('contactModal')">&times;</span>
-    <div class="modal-text-box">
-        <h2 style="color:var(--accent)">Contact NASA Rando</h2>
-        <form action="https://formspree.io/f/mqkrpobj" method="POST">
-            <input type="text" name="nom" placeholder="Nom" required style="width:100%; padding:10px; margin:5px 0; border:1px solid #ccc; border-radius:5px;">
-            <input type="text" name="prenom" placeholder="Prénom" required style="width:100%; padding:10px; margin:5px 0; border:1px solid #ccc; border-radius:5px;">
-            <input type="email" name="email" placeholder="Adresse mail" required style="width:100%; padding:10px; margin:5px 0; border:1px solid #ccc; border-radius:5px;">
-            <textarea name="message" rows="5" placeholder="Votre message" required style="width:100%; padding:10px; margin:5px 0; border:1px solid #ccc; border-radius:5px;"></textarea>
-            <button type="submit" style="width:100%; padding:12px; background:var(--accent); color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">Envoyer</button>
-        </form>
-    </div>
-</div>
-
-<script>
-    const SOURCE_DATA = {
-        "balisage": { "type": "image", "url": "images/Balisage.png" },
-        "histoire": { "type": "doc", "url": "documentation/histoire.html" },
-        "bienfaits": { "type": "doc", "url": "documentation/bienfaits.html" }
-    };
-
-    async function chargerContenu(id) {
-        const info = SOURCE_DATA[id];
-        const inner = document.getElementById('modalInner');
-        inner.innerHTML = ""; 
-
-        if(!info) {
-            inner.innerHTML = `<div class="modal-text-box"><h2>${id}</h2><p>Contenu en cours de rédaction.</p></div>`;
-        } 
-        else if(info.type === "image") {
-            inner.innerHTML =
