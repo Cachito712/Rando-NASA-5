@@ -3,134 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guide de Randonnée</title>
+    <title>Guide de Randonnée Pédestre</title>
     <style>
-        body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            background-color: #f0f4f8; 
-            margin: 0; padding: 40px 20px; 
-            display: flex; justify-content: center;
-        }
+        /* RESET ET BASE */
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
+        
+        .main-container { max-width: 1200px; margin: 40px auto; padding: 20px; }
+        
+        h1 { color: #1e40af; text-align: center; font-size: 2.8em; margin-bottom: 50px; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
 
-        .container { width: 100%; max-width: 1000px; }
-
-        h1 { 
-            color: #2563eb; text-align: center; font-size: 2.5em;
-            margin-bottom: 50px; display: flex; align-items: center; justify-content: center; gap: 15px;
-        }
-
-        /* GRILLE DES 6 CARTES */
-        .grid-container {
+        /* GRILLE DE 6 ENCADRÉS - DESIGN ORIGINAL RESTAURÉ */
+        .menu-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+            gap: 30px;
             margin-bottom: 40px;
         }
 
         .card {
-            background: white;
-            height: 160px; /* Hauteur fixe pour l'uniformité */
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 2px solid transparent;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.2);
             border-color: #2563eb;
         }
 
-        .card span { font-size: 45px; margin-bottom: 10px; } /* Taille emoji forcée */
-        .card h3 { margin: 0; color: #1e40af; font-size: 1.2em; }
+        .card .icon { font-size: 50px; margin-bottom: 15px; }
+        .card h3 { margin: 0; color: #1e3a8a; font-size: 1.4em; }
 
-        /* SECTION BAS DE PAGE */
-        .bottom-row {
-            display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 25px;
+        /* SECTION LIENS UTILES ET CONTACT */
+        .footer-layout {
+            display: flex;
+            gap: 20px;
             align-items: stretch;
         }
 
-        .links-box {
-            background: #ffffff;
+        .links-bar {
+            flex: 2;
+            background: #eff6ff;
+            border-radius: 20px;
             padding: 25px;
-            border-radius: 15px;
-            border: 2px dashed #2563eb;
+            border: 2px dashed #3b82f6;
         }
 
-        .links-box h3 { color: #1e40af; margin-top: 0; display: flex; align-items: center; gap: 10px; }
+        .links-bar h2 { margin-top: 0; color: #1e40af; font-size: 1.2em; border-bottom: 1px solid #bfdbfe; padding-bottom: 10px; }
+        
+        .links-list { display: flex; flex-wrap: wrap; gap: 20px; padding: 0; list-style: none; margin-top: 15px; }
+        .links-list li { display: flex; align-items: center; gap: 8px; }
+        .links-list a { color: #2563eb; text-decoration: none; font-weight: 600; cursor: pointer; }
+        .links-list a:hover { text-decoration: underline; }
 
-        .contact-card {
-            background: #2563eb;
+        .contact-btn {
+            flex: 1;
+            background: #1e40af;
             color: white;
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: background 0.3s;
+            padding: 20px;
         }
 
-        .contact-card a { color: white; font-weight: bold; font-size: 1.1em; }
+        .contact-btn:hover { background: #1d4ed8; }
+        .contact-btn span { font-size: 30px; margin-bottom: 5px; }
 
-        ul { list-style: none; padding: 0; margin: 15px 0 0 0; }
-        li { margin: 12px 0; display: flex; align-items: center; gap: 10px; }
-        a { text-decoration: none; color: #2563eb; font-weight: 500; cursor: pointer; }
-        a:hover { text-decoration: underline; }
-
-        /* MODALE */
+        /* MODALE LARGE ET PROPRE */
         .modal {
-            display: none; position: fixed; z-index: 9999;
+            display: none;
+            position: fixed;
+            z-index: 9999;
             left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
-            background: white; margin: 2vh auto;
-            width: 85%; max-width: 1000px; height: 92vh;
-            border-radius: 15px; display: flex; flex-direction: column; overflow: hidden;
+            background: #fff;
+            margin: 2vh auto;
+            width: 85%;
+            max-width: 1100px;
+            height: 92vh;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        .modal-header { padding: 15px 25px; background: #f8fafc; border-bottom: 1px solid #eee; text-align: right; }
-        .close { font-size: 35px; cursor: pointer; color: #64748b; }
-        .modal-body { flex: 1; overflow-y: auto; padding: 40px; }
+        .modal-header { padding: 15px 25px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; text-align: right; }
+        .close { font-size: 35px; font-weight: bold; cursor: pointer; color: #94a3b8; }
+        .close:hover { color: #000; }
 
-        @media (max-width: 768px) {
-            .grid-container { grid-template-columns: 1fr; }
-            .bottom-row { grid-template-columns: 1fr; }
+        .modal-body { flex: 1; overflow-y: auto !important; padding: 40px; }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .menu-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-layout { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🏔️ GUIDE DE RANDONNÉE</h1>
+<div class="main-container">
+    <h1>🏔️ Guide de Randonnée Pédestre</h1>
 
-    <div class="grid-container">
-        <div class="card" onclick="chargerContenu('histoire')"><span>📜</span><h3>Histoire</h3></div>
-        <div class="card" onclick="chargerContenu('bienfaits')"><span>🩺</span><h3>Bienfaits</h3></div>
-        <div class="card" onclick="chargerContenu('equipement')"><span>🎒</span><h3>Équipement</h3></div>
-        <div class="card" onclick="chargerContenu('meteo')"><span>☀️</span><h3>Météo</h3></div>
-        <div class="card" onclick="chargerContenu('faune')"><span>🦌</span><h3>Faune & Flore</h3></div>
-        <div class="card" onclick="chargerContenu('risques')"><span>⚠️</span><h3>Risques</h3></div>
+    <div class="menu-grid">
+        <div class="card" onclick="chargerContenu('histoire')"><span class="icon">📜</span><h3>Histoire</h3></div>
+        <div class="card" onclick="chargerContenu('bienfaits')"><span class="icon">🩺</span><h3>Bienfaits</h3></div>
+        <div class="card" onclick="chargerContenu('equipement')"><span class="icon">🎒</span><h3>Équipement</h3></div>
+        <div class="card" onclick="chargerContenu('meteo')"><span class="icon">☀️</span><h3>Météo</h3></div>
+        <div class="card" onclick="chargerContenu('faune')"><span class="icon">🦌</span><h3>Faune & Flore</h3></div>
+        <div class="card" onclick="chargerContenu('risques')"><span class="icon">⚠️</span><h3>Risques</h3></div>
     </div>
 
-    <div class="bottom-row">
-        <div class="links-box">
-            <h3>🔗 Liens & Outils</h3>
-            <ul>
-                <li>🚩 <a onclick="chargerContenu('balisage')">Comprendre le balisage (Image)</a></li>
-                <li>🌐 <a href="https://www.ffrandonnee.fr" target="_blank">Fédération Française de Randonnée</a></li>
+    <div class="footer-layout">
+        <div class="links-bar">
+            <h2>🔗 Liens utiles & Outils</h2>
+            <ul class="links-list">
+                <li>🚩 <a onclick="chargerContenu('balisage')">Comprendre le balisage</a></li>
+                <li>🌐 <a href="https://www.ffrandonnee.fr" target="_blank">FFRandonnée</a></li>
                 <li>🏔️ <a href="https://www.meteofrance.com/meteo-montagne" target="_blank">Météo Montagne</a></li>
             </ul>
         </div>
-        <div class="contact-card">
-            <span style="font-size: 30px; margin-bottom: 10px;">✉️</span>
-            <p style="margin: 0 0 10px 0;">Une question ?</p>
-            <a href="mailto:votre@email.com">Contactez-nous</a>
-        </div>
+        
+        <a href="mailto:votre@email.com" class="contact-btn">
+            <span>✉️</span>
+            <strong>Contactez-nous</strong>
+        </a>
     </div>
 </div>
 
@@ -151,24 +166,29 @@
     async function chargerContenu(id) {
         const info = SOURCE_DATA[id];
         const inner = document.getElementById('modalInner');
-        if(!info) { alert("Bientôt disponible !"); return; }
-        inner.innerHTML = "Chargement...";
-        document.getElementById('modalContenu').style.display = 'block';
+        const modal = document.getElementById('modalContenu');
+        
+        if(!info) { alert("Cette section est en cours d'écriture !"); return; }
+
+        inner.innerHTML = "<p style='text-align:center;'>Chargement en cours...</p>";
+        inner.scrollTop = 0;
 
         if(info.type === "image") {
             inner.innerHTML = `<img src="${info.url}" style="width:100%; border-radius:10px;">`;
         } else {
             try {
-                const r = await fetch(info.url + '?v=' + Date.now());
-                const html = await r.text();
+                const response = await fetch(info.url + '?v=' + Date.now());
+                const html = await response.text();
                 inner.innerHTML = html;
-            } catch { inner.innerHTML = "Erreur de chargement."; }
+            } catch (err) { inner.innerHTML = "Erreur de chargement du fichier."; }
         }
-        inner.scrollTop = 0;
+        
+        modal.style.display = 'block';
+        setTimeout(() => { inner.scrollTop = 0; }, 100);
     }
 
     function closeModal() { document.getElementById('modalContenu').style.display = 'none'; }
-    window.onclick = e => { if(e.target.className === 'modal') closeModal(); }
+    window.onclick = e => { if(e.target == document.getElementById('modalContenu')) closeModal(); }
 </script>
 
 </body>
