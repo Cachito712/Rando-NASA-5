@@ -9,21 +9,20 @@
         header { display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; background: rgba(0,0,0,0.4); }
         .main-title { font-size: 4rem; font-weight: 900; margin: 0; text-transform: uppercase; color: white; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         
-        /* Correction menu "Liens utiles" pour qu'il ne disparaisse pas */
+        /* MODIFICATION : Menu Liens utiles rapproché (top: 25px au lieu de 35px) */
         .links-block { position: relative; color: var(--header-ui); cursor: pointer; padding: 10px 0; }
-        .nav-menu { display: none; position: absolute; background: #0f172a; border: 1px solid var(--accent); border-radius: 8px; min-width: 320px; padding: 10px 0; z-index: 9999; list-style: none; margin: 0; box-shadow: 0 15px 40px rgba(0,0,0,0.8); top: 25px; left: 0; }
+        .nav-menu { display: none; position: absolute; background: #0f172a; border: 1px solid var(--accent); border-radius: 8px; min-width: 250px; padding: 10px 0; z-index: 9999; list-style: none; margin: 0; box-shadow: 0 15px 40px rgba(0,0,0,0.8); top: 25px; left: 0; }
         .links-block:hover .nav-menu { display: block; }
         
-        /* Sous-menu Météo */
+        /* MODIFICATION : Sous-menu Météo */
         .sub-menu-trigger { position: relative; }
-        .sub-menu { display: none; position: absolute; left: 100%; top: -1px; background: #0f172a; border: 1px solid var(--accent); border-radius: 0 8px 8px 0; min-width: 200px; list-style: none; padding: 0; }
+        .sub-menu { display: none; position: absolute; left: 100%; top: -1px; background: #0f172a; border: 1px solid var(--accent); border-radius: 0 8px 8px 0; min-width: 200px; list-style: none; padding: 0; margin: 0; }
         .sub-menu-trigger:hover .sub-menu { display: block; }
 
-        .nav-menu li { padding: 12px 20px !important; border-bottom: 1px solid rgba(255,255,255,0.05); color: white; cursor: pointer; }
+        .nav-menu li { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.05); color: white; }
         .nav-menu li:hover { color: var(--accent); background: rgba(255,255,255,0.1); }
-        .nav-menu a { color: inherit; text-decoration: none; display: block; }
-        
-        /* Grille des 6 cartes sur 2 lignes */
+        .nav-menu a { color: inherit; text-decoration: none; display: block; width: 100%; }
+
         .container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; max-width: 1400px; margin: 40px auto; padding: 0 20px; }
         .card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.2); border-radius: 15px; padding: 25px; backdrop-filter: blur(10px); }
         .card h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-top: 0; }
@@ -31,7 +30,6 @@
         .card li { padding: 8px 0; cursor: pointer; }
         .card li:hover { color: var(--accent); }
         
-        /* Modales */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; align-items: center; justify-content: center; }
         .modal-content { position: relative; width: 95%; height: 95%; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-y: auto; }
         .close { position: absolute; top: 10px; right: 20px; color: white; font-size: 50px; cursor: pointer; z-index: 10001; }
@@ -55,7 +53,9 @@
             <li><a href="https://www.ffrandonnee.fr" target="_blank">🌐 FFRandonnée</a></li>
         </ul>
     </div>
+
     <h1 class="main-title">NASA Rando</h1>
+
     <div style="color:var(--header-ui); cursor:pointer;" onclick="document.getElementById('contactModal').style.display='flex'">
         <b>✉️ CONTACT</b>
     </div>
@@ -86,11 +86,59 @@
             <li onclick="chargerContenu('sac')">Sac à dos</li>
         </ul>
     </div>
-    <div class="card">
-        <h2>👣 Pratique</h2>
-        <ul>
-            <li onclick="chargerContenu('organisation')">Organisation</li>
-            <li onclick="chargerContenu('forme')">Être en forme</li>
-        </ul>
+    <div class="card"><h2>👣 Pratique</h2><ul><li onclick="chargerContenu('organisation')">Organisation</li><li onclick="chargerContenu('forme')">Être en forme</li></ul></div>
+    <div class="card"><h2>🌿 Éthique</h2><ul><li onclick="chargerContenu('environnement')">Environnement</li><li onclick="chargerContenu('responsabilite')">Pratique responsable</li></ul></div>
+    <div class="card"><h2>⛰️ Terrains</h2><ul><li onclick="chargerContenu('massifs')">Massifs</li><li onclick="chargerContenu('cotation')">Cotation</li></ul></div>
+</div>
+
+<div id="modalContenu" class="modal"><span class="close" onclick="closeModal('modalContenu')">&times;</span><div id="modalInner" class="modal-content"></div></div>
+
+<div id="contactModal" class="modal">
+    <span class="close" onclick="closeModal('contactModal')">&times;</span>
+    <div class="modal-text-box">
+        <h2>Contact NASA Rando</h2>
+        <form action="https://formspree.io/f/mqkrpobj" method="POST">
+            <input type="text" name="nom" placeholder="Nom" required style="width:100%; padding:10px; margin:5px 0; border:1px solid #ccc; border-radius:5px;">
+            <input type="email" name="email" placeholder="Adresse mail" required style="width:100%; padding:10px; margin:5px 0; border:1px solid #ccc; border-radius:5px;">
+            <textarea name="message" rows="5" placeholder="Votre message" required style="width:100%; padding:10px; margin:5px 0; border:1px solid #ccc; border-radius:5px;"></textarea>
+            <button type="submit" style="width:100%; padding:10px; background:var(--accent); color:white; border:none; cursor:pointer;">Envoyer</button>
+        </form>
     </div>
-    <div
+</div>
+
+<script>
+    const SOURCE_DATA = {
+        "balisage": { "type": "image", "url": "images/Balisage.png" },
+        "histoire": { "type": "doc", "url": "documentation/histoire.html" },
+        "bienfaits": { "type": "doc", "url": "documentation/bienfaits.html" }
+    };
+
+    async function chargerContenu(id) {
+        const info = SOURCE_DATA[id];
+        const inner = document.getElementById('modalInner');
+        inner.innerHTML = ""; 
+
+        if(!info) {
+            inner.innerHTML = `<div class="modal-text-box"><h2>${id}</h2><p>Contenu en cours de rédaction.</p></div>`;
+        } 
+        else if(info.type === "image") {
+            inner.innerHTML = `<img src="${info.url}" style="max-width:100%; border-radius:8px;" onerror="alert('Image manquante : ' + this.src)">`;
+        } 
+        else if(info.type === "doc") {
+            try {
+                const response = await fetch(info.url);
+                if (!response.ok) throw new Error("Fichier non trouvé");
+                const textContent = await response.text();
+                inner.innerHTML = `<div class="modal-text-box">${textContent}</div>`;
+            } catch (err) {
+                inner.innerHTML = `<div class="modal-text-box"><h2>Erreur</h2><p>Fichier : ${info.url} non trouvé.</p></div>`;
+            }
+        }
+        document.getElementById('modalContenu').style.display = 'flex';
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    window.onclick = function(e) { if (e.target.className === 'modal') { closeModal(e.target.id); } }
+</script>
+</body>
+</html>
