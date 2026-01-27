@@ -19,14 +19,15 @@
         .sub-menu { display: none; position: absolute; left: 100%; top: -1px; background: #0f172a; border: 1px solid var(--accent); border-radius: 0 8px 8px 0; min-width: 200px; list-style: none; padding: 0; margin: 0; }
         .sub-menu-trigger:hover .sub-menu { display: block; }
 
-        /* --- DETERMINER SA POSITION (DROITE + CENTRÉ) --- */
-        .item-special { position: relative; font-weight: bold; cursor: pointer; padding: 10px 0; }
+        /* --- DETERMINER SA POSITION (DROITE + RAPPROCHÉ + CENTRÉ) --- */
+        .item-special { position: relative; font-weight: bold; cursor: pointer; padding: 10px 0; width: fit-content; }
         
         .inner-menu { 
             display: none; 
             position: absolute; 
-            left: 100%; /* Collé à droite */
-            top: 0; 
+            /* MODIFICATION : On rapproche l'encadré du texte */
+            left: 180px; 
+            top: -10px; 
             background: #0f172a; 
             border: 1px solid var(--accent); 
             border-radius: 8px; 
@@ -34,17 +35,17 @@
             padding: 10px 0; 
             list-style: none; 
             z-index: 1000;
-            text-align: center; /* Centrage du texte */
+            text-align: center;
             box-shadow: 10px 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* LE PONT INVISIBLE : Empêche le menu de se fermer lors du glissement */
+        /* PONT INVISIBLE élargi pour couvrir l'espace de rapprochement */
         .item-special::after {
             content: "";
             position: absolute;
             top: 0;
-            right: -20px;
-            width: 20px;
+            right: -190px;
+            width: 190px;
             height: 100%;
             display: block;
         }
@@ -155,38 +156,4 @@
 <script>
     const SOURCE_DATA = {
         "balisage": { "type": "image", "url": "images/Balisage.png" },
-        "carte": { "type": "image", "url": "images/Carte-IGN.png" },
-        "histoire": { "type": "doc", "url": "documentation/histoire.html" },
-        "bienfaits": { "type": "doc", "url": "documentation/bienfaits.html" }
-    };
-
-    async function chargerContenu(id) {
-        const info = SOURCE_DATA[id];
-        const inner = document.getElementById('modalInner');
-        const modalElement = document.getElementById('modalContenu');
-        inner.innerHTML = ""; 
-
-        if(!info) {
-            inner.innerHTML = `<div class="modal-text-box"><h2>${id}</h2><p>Contenu en cours de rédaction.</p></div>`;
-        } 
-        else if(info.type === "image") {
-            inner.innerHTML = `<img src="${info.url}" style="max-width:100%; border-radius:8px;" onerror="alert('Image manquante : ' + this.src)">`;
-        } 
-        else if(info.type === "doc") {
-            try {
-                const response = await fetch(info.url);
-                const textContent = await response.text();
-                inner.innerHTML = `<div class="modal-text-box">${textContent}</div>`;
-            } catch (err) {
-                inner.innerHTML = `<div class="modal-text-box"><h2>Erreur</h2><p>Fichier non trouvé.</p></div>`;
-            }
-        }
-        modalElement.style.display = 'flex';
-        modalElement.scrollTop = 0;
-    }
-
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    window.onclick = function(e) { if (e.target.className === 'modal') { closeModal(e.target.id); } }
-</script>
-</body>
-</html>
+        "carte": { "type": "image",
